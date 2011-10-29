@@ -1,0 +1,5 @@
+
+(setenv "HOME" "E:/cygwin/home/Administrator/")
+(load-file "~/.emacs")
+
+; vim: ft=lisp
