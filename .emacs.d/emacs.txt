@@ -1,0 +1,88 @@
+C-x RET f       set-buffer-file-code-system
+
+Indentation
+C-M-o           split-line
+M-m             back-to-indentation
+? C-x Tab       shift block of lines rigidly right of left(indent-rigidly)
+M-i             tab-to-tab-stop
+M-x indent-relative, untabify
+
+Killing and Moving Text
+M-\             delete spaces and tabs around the point
+M-SPC           just-one-spcae
+C-x C-o         delete blank lines around the current lines(delete-blank-lines)
+M-^             joins the curren line and the previous line, leaving a space(delete-indentation)
+C-S-backspace   kill-whole-line
+
+C-x C-x         exchange-point-and-mark
+M-h             mark-paragraph
+C-M-h           mark-defun
+C-x C-p         mark-page
+C-x h           mark-whole-buffer
+M-@             mark-word
+Operation on the Region
+M-%             query-replace
+C-M-\           indent-region
+M-x fill-region
+M-x eval-region
+C-x r s         copy-to-register
+
+M-=             count-lines-region
+C-x =           what-cursor-position
+C-x l           count-lines-page
+M-x load-file ~/.emacs
+C-x o           other
+C-x 1           0:删除当前, 1:删除其它, 2:split, 3:vsplit, 4 b(f), 5 2:new frame, C-M-v
+C-x C-b, C-x b
+C-x C-s, C-x s
+C-x k
+C-x Esc Esc     repeat-complex-command
+M-n, M-p, M-r, M-s
+M-x list-command
+
+C-x C-w         save as
+C-_, C-x u, C-/     undo
+C-w             kill-region
+M-w             kill-ring-save
+M-d             kill-word
+M-t             transpose-words
+M-Del           backward-kill-word
+C-x Del         backword-kill-sentence
+M-k             kill-sentence
+? C-m-k         kill the following balanced expression (kill-sexp)
+M-z {char}      kill throuth the next occurrence of char (zap-to-char)
+C-y             yank
+M-y             yank-pop
+? C-M-w         append-next-kill
+append-to-buffer, prepend-to-buffer, copy-to-buffer, insert-buffer, append-to-file
+
+C-s, C-r        search forward/backword
+     C-w
+     C-y
+     M-y
+     M-c
+     M-r
+     M-e
+     M-n M-p
+     C-q C-j
+C-o             open-line
+C-x C-o         delete-blank-lines
+
+M-g M-g, M-g g, M-x goto-line
+M-x revert-buffer, hl-line-mode, size-indication-mode
+
+C-h c           command
+C-h k           key binding
+C-h f           解释一个函数function
+C-h v           用来显示Emacs变量的文档variable
+C-h a           相关命令搜索（Comand Apropos)
+C-h i
+C-h m           current major mode
+M-x apropos     functions and variables
+M-x apropos-variable
+                user-option variables
+
+C-x r<SPC>
+C-x r j
+
+" vim: list

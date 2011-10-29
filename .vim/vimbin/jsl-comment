@@ -1,0 +1,31 @@
+http://www.javascriptlint.com/docs/index.htm
+
+Disable Warnings with Control Statement
+/*jsl:ignoreall*/
+or
+/*jsl:ignore*/
+(code that fires warnings)
+/*jsl:end*/
+
+Option Explicit
+/*jsl:option explicit*/
+
+/*jsl:import PathToOtherScript*/
+
+Add the line "+define window" to your configuration file to tell JavaScript Lint about this global.
+
+Switches and Breaks;
+switch (i) {
+  case 1:
+    break;
+  case 2:
+    /*jsl:fallthru*/
+  case 3:
+    break;
+}
+
+Empty Statements
+while (!hasResponse()) {
+    /*jsl:pass*/
+}
+

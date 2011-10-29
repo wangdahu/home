@@ -1,0 +1,15 @@
+[user]
+    name = yangg
+    email = yangguangsmail@gmail.com
+[core]
+    editor = vim
+[color]
+    ui = true
+[alias]
+    ci = commit
+    st = status
+    co = checkout
+    br = branch
+    ls = ls-tree --name-only HEAD
+[github]
+    user = yangg
