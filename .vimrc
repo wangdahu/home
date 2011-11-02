@@ -226,6 +226,11 @@ let Grep_Skip_Files         = '*~ *.swp'
 " let Grep_Null_Device        = '/dev/null'
 " let Grep_Shell_Quote_Char   = "'"
 " let Grep_Shell_Escape_Char  = "'"
+
+" lookupfile
+let LookupFile_TagExpr = string($HOME . '/.filenametags')
+let LookupFile_FileFilter = '\.\(png\|gif\|bmp\|swp\)$'
+let LookupFile_MinPatLength = 2
 " }}}
 
 if s:isWin 
