@@ -56,6 +56,8 @@ if has("gui_running")
     set columns=100
     set guioptions-=T           " hide tool bar
     set guioptions-=m           " hide menu bar
+    autocmd Filetype javascript setlocal makeprg=jsl\ -nologo\ -nofilelisting\ -nosummary\ -nocontext\ -conf\ $VIMFILES/vimbin/jsl.conf\ -process\ %
+    autocmd BufWritePost *.js call Make()
 endif
 
 let mapleader=';'           " define before key mappings
@@ -120,43 +122,36 @@ endif
 
 " end mappings }}}
 
-" Only do this part when compiled with support for autocommands. {{{
-if has('autocmd')
-    augroup filetype_config
-        autocmd!
+" autocommands. {{{
+augroup filetype_config
+    autocmd!
 
-        autocmd BufRead,BufNewFile *.json set filetype=javascript
+    autocmd BufRead,BufNewFile *.json set filetype=javascript
 
-        autocmd Filetype javascript setlocal dictionary=$VIMFILES/dict/javascript.dict |
-                    \ setlocal makeprg=jsl\ -nologo\ -nofilelisting\ -nosummary\ -nocontext\ -conf\ $VIMFILES/vimbin/jsl.conf\ -process\ % |
+    autocmd Filetype javascript setlocal dictionary=$VIMFILES/dict/javascript.dict
 
-        autocmd BufWritePre *.js silent!
-                    \ execute "'[,']s/".'\(alert\|console\.log\)([^()]\{-})\zs$/;/'
-        autocmd BufWritePost *.js call Make()
+    autocmd FileType css setlocal dictionary=$VIMFILES/dict/css.dict |
+                \ setlocal iskeyword+=#
 
-        autocmd FileType css setlocal dictionary=$VIMFILES/dict/css.dict |
-                    \ setlocal iskeyword+=#
+    autocmd FileType php setlocal iskeyword+=$
 
-        autocmd FileType php setlocal iskeyword+=$
+    let $PRG_EXT = s:isWin ? ".exe" : ""
+    autocmd FileType c setlocal makeprg=gcc\ -o\ %<$PRG_EXT\ %
+    autocmd FileType cpp setlocal makeprg=g++\ -o\ %<$PRG_EXT\ %
 
-        let $PRG_EXT = s:isWin ? ".exe" : ""
-        autocmd FileType c setlocal makeprg=gcc\ -o\ %<$PRG_EXT\ %
-        autocmd FileType cpp setlocal makeprg=g++\ -o\ %<$PRG_EXT\ %
+    " When editing a file, always jump to the last known cursor position.
+    " And open enough folds to make the cursor is not folded
+    " Don't do it when the position is invalid or when inside an event handler
+    " (happens when dropping a file on gvim).
+    autocmd BufWinEnter *
+                \ if line("'\"") <= line("$") |
+                \   exe "normal! g`\"" | exe "normal! zv" |
+                \ endif
 
-        " When editing a file, always jump to the last known cursor position.
-        " And open enough folds to make the cursor is not folded
-        " Don't do it when the position is invalid or when inside an event handler
-        " (happens when dropping a file on gvim).
-        autocmd BufWinEnter *
-                    \ if line("'\"") <= line("$") |
-                    \   exe "normal! g`\"" | exe "normal! zv" |
-                    \ endif
+    " Automating read-only access to existing files
+    autocmd SwapExists * let v:swapchoice = 'o'
 
-        " Automating read-only access to existing files
-        autocmd SwapExists * let v:swapchoice = 'o'
-
-    augroup END
-endif " has('autocmd')}}}
+augroup END " }}}
 
 " Compare current buffer and the file it was loaded from in vertical split
 " window
