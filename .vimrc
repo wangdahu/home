@@ -135,6 +135,8 @@ augroup filetype_config
 
     autocmd FileType php setlocal iskeyword+=$
 
+    autocmd FileType html,php,jsp setlocal includeexpr=substitute(v:fname,'^/','','')
+
     let $PRG_EXT = s:isWin ? ".exe" : ""
     autocmd FileType c setlocal makeprg=gcc\ -o\ %<$PRG_EXT\ %
     autocmd FileType cpp setlocal makeprg=g++\ -o\ %<$PRG_EXT\ %
