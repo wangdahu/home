@@ -3,7 +3,7 @@
 (defconst lisp-path "~/.emacs.d/site-lisp/")
 (add-to-list 'load-path lisp-path)
 
-;; (set-language-environment 'UTF-8)
+(prefer-coding-system 'utf-8-unix)
 ;; (set-default-font "Consolas-12")
 (require 'linum)
 (global-linum-mode t)
