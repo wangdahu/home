@@ -19,7 +19,7 @@ set softtabstop=4           " backspace
 " set foldmethod=indent
 set backspace=indent,eol,start  " allow backspacing over everything in insert mode
 set whichwrap+=<,>,[,]
-" set cmdheight=2 
+" set cmdheight=2
 " set list                    " show tab characters.Visual Whitespace.
 set listchars=eol:¶,tab:>-,trail:·,extends:»,precedes:« " 182, , 187, 171
 set scrolloff=1
@@ -37,11 +37,12 @@ set incsearch               " do incremental searching
 set complete=.,b,d,i,k,t,u,w
 set diffopt=vertical
 set splitright splitbelow
-set sessionoptions=buffers,curdir,folds,resize,tabpages " localoptions 
+set sessionoptions=buffers,curdir,folds,resize,tabpages " localoptions
 set iskeyword=@,48-57,_,-
 " set spell
 set display=lastline
 set path=.,~
+set wildmode=longest:full
 set wildignore=*.swp,.DS_Store,.localized,.git,.svn
 set wildmenu
 " set laststatus=2
@@ -97,13 +98,13 @@ function! s:run_script()
 
     let sys_prefix = s:isWin ? '!' : '!./'
     let fname = shellescape(expand("%:t"))
-    if index(["python", "sh", "dosbatch"], &ft) > -1 
+    if index(["python", "sh", "dosbatch"], &ft) > -1
         execute sys_prefix . fname
     elseif &ft == "vim"
         execute "source %"
     elseif index(["c", "cpp"], &ft) > -1
         if !len(getqflist())
-            execute sys_prefix . expand("%:t:r") 
+            execute sys_prefix . expand("%:t:r")
         endif
     elseif &ft == "php" && exists("g:php_command")
         let cmd = g:php_command . " " . fname
@@ -134,8 +135,6 @@ augroup filetype_config
                 \ setlocal iskeyword+=#
 
     autocmd FileType php setlocal iskeyword+=$
-
-    autocmd FileType html,php,jsp setlocal includeexpr=substitute(v:fname,'^/','','')
 
     let $PRG_EXT = s:isWin ? ".exe" : ""
     autocmd FileType c setlocal makeprg=gcc\ -o\ %<$PRG_EXT\ %
@@ -172,7 +171,7 @@ let html_number_lines = 1
 " taglist-intro
 let Tlist_Auto_Open = 0
 let Tlist_Use_Right_Window = 1
-let Tlist_Exit_OnlyWindow = 1 
+let Tlist_Exit_OnlyWindow = 1
 let Tlist_File_Fold_Auto_Close = 1
 " let Tlist_Show_One_File = 1
 let tlist_php_settings = 'php;c:class;d:constant;f:function'
@@ -183,7 +182,6 @@ imap <F4> <C-o>:TlistToggle<CR>
 " NERDTree
 " NERDTreeGlobalCommands
 " NERDTreeMappings
-let NERDTreeIgnore = ['ntuser']     " for win7 $HOME/
 map <F3> :NERDTreeToggle<CR>
 imap <F3> <C-o>:NERDTreeToggle<CR>
 
@@ -198,7 +196,7 @@ let NERDSpaceDelims = 1
 imap <M-/> <C-o><Plug>NERDCommenterToggle
 
 " zencoding
-" <C-Y>n        zencoding-goto-next-point   
+" <C-Y>n        zencoding-goto-next-point
 " <C-Y>k        zencoding-remove-tag
 " <C-Y>j        zencoding-split-join-tag
 " <C-Y>a        zencoding-make-anchor-url
@@ -230,7 +228,7 @@ let Grep_Skip_Files         = '*~ *.swp'
 " let Grep_Shell_Escape_Char  = "'"
 " }}}
 
-if s:isWin 
+if s:isWin
     set termencoding=cp936  " for windows console
     language messages zh_CN.utf-8
 endif
