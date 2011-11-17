@@ -1,6 +1,18 @@
 http://www.ibm.com/developerworks/cn/linux/l-vim-script-5/
 http://code.google.com/p/vimcolorschemetest/
 
+:w !sudo tee %
+g<C-g>              Prints the current position of the cursor in five ways:
+                    Columnu, Line, Word, Charcter and Byte.
+:=                  Print the last line number
+:tab ball
+:only
+:ju[mps]
+autocmd VimResized * exe "normal \<C-W>="
+g, g;               Go to [count] newer / older cursor position in change list.
+
+zj, zk
+
 :%!xxd
 
 *cmdline-editing*
@@ -89,6 +101,7 @@ CTRL-U              Delete all entered characters in the current line
 <CR> or CTRL-M      Begin new line
 CTRL-R  {0-9a-z"%#*+:.-=}   
                     Insert the contents of a register
+CTRL-Q              Insert speical keys
 CTRL-T, CTRL-D
 0 CTRL-D            Delete all indent in the current line
 ^ CTRL-D            Delete all indent in the current line. The indent is restored in the next line.
@@ -197,7 +210,7 @@ CTRL-]              jump to specific subjects by using tags. CTRL-T/CTRL-O jump 
 :next :prev :args :ls :rewind :last nCTRL-^    
                     editing multiple files
 split mode:
-CTRL-ww, CTRL-wj, CTRL-wk,CTRL-wh,CTRL-wl
+CTRL-W[WSVNCO=]
 CTRL-WJ, CTRL-WK,CTRL-WH,CTRL-WL
                     move current window to.
 
