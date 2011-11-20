@@ -106,14 +106,14 @@ function! s:run_script()
         if !len(getqflist())
             execute sys_prefix . expand("%:t:r")
         endif
-    elseif &ft == "php" && exists("g:php_command")
-        let cmd = g:php_command . " " . fname
+    elseif &ft == "php"
+        let cmd =  (exists('g:php_command') ? g:php_command : 'php') . ' ' . fname
         let output = system(cmd)
         if len(output) | echo output | endif
-        " execute '!' . g:php_command . ' ' . fname
+        " execute '!' . cmd . ' ' . fname
     elseif index(["html", "vb"], &ft) > -1
         try
-            python import webbrowser,vim; webbrowser.open(vim.current.buffer.name)
+            python import webbrowser,vim; webbrowser.open('file://' + vim.current.buffer.name)
         catch /.*/
             silent execute '!' . fname
         endtry
