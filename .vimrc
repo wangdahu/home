@@ -45,7 +45,7 @@ set path=.,~
 set wildmode=longest:full
 set wildignore=*.swp,.DS_Store,.localized,.git,.svn
 set wildmenu
-" set laststatus=2
+autocmd BufEnter * if &ff != 'unix' || &fenc != 'utf-8' | setl laststatus=2 | endif
 set statusline=%f\ %M[%{&ff},%{&fenc}]%y%r%=%l,%c\ \ \ %P
 set undodir=$TMP
 set undofile
@@ -69,20 +69,25 @@ imap <M-h> <Left>
 imap <M-j> <C-o><Down>
 imap <M-k> <C-o><Up>
 imap <M-l> <Right>
-
-imap <M-a> <C-o>A
-imap <M-i> <C-o>I
+imap <M-e> <C-o>A
+imap <M-a> <C-o>I
 imap <M-d> <C-o>dw
-imap <M-Backspace> <C-o>db
-
+imap <M-Backspace> <C-o>db  " diff from <C-w>
 imap <M-o> <C-o>O
 
+nmap <Esc><Esc> :nohl<CR>
 " move cursor in long line
 map <Up> gk
 map <Down> gj
 
-" backspace in Visual mode deletes selection
-vnoremap <BS> d
+nnoremap Y y$
+vnoremap <BS> d             " backspace in Visual mode deletes selection
+cnoremap <C-a> <Home>
+cnoremap <C-f> <Right>
+cnoremap <C-b> <Left>
+cnoremap <M-f> <S-Right>
+cnoremap <M-b> <S-Left>
+
 
 function! Make()
     if &modified | silent write | endif
@@ -136,6 +141,8 @@ augroup filetype_config
 
     autocmd FileType php setlocal iskeyword+=$
 
+    autocmd FileType html,php,jsp,javascript setl includeexpr=substitute(v:fname, "^/", '', '')
+
     let $PRG_EXT = s:isWin ? ".exe" : ""
     autocmd FileType c setlocal makeprg=gcc\ -o\ %<$PRG_EXT\ %
     autocmd FileType cpp setlocal makeprg=g++\ -o\ %<$PRG_EXT\ %
@@ -156,10 +163,8 @@ augroup END " }}}
 
 " Compare current buffer and the file it was loaded from in vertical split
 " window
-if !exists(':DiffOrig')
-    command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
-                \ | wincmd p | diffthis
-endif
+command! DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
+            \| wincmd p | diffthis
 
 " plugin config {{{
 

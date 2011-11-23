@@ -1,6 +1,7 @@
 http://www.ibm.com/developerworks/cn/linux/l-vim-script-5/
 http://code.google.com/p/vimcolorschemetest/
 
+gv
 :w !sudo tee %
 g<C-g>              Prints the current position of the cursor in five ways:
                     Columnu, Line, Word, Charcter and Byte.
@@ -10,6 +11,7 @@ g<C-g>              Prints the current position of the cursor in five ways:
 :ju[mps]
 autocmd VimResized * exe "normal \<C-W>="
 g, g;               Go to [count] newer / older cursor position in change list.
+g0 g^ g$
 
 zj, zk
 
@@ -139,8 +141,10 @@ Notice: guG         lower case to the file end (Including current line !!!!!)
 
 =%  format block
 ={motion}
+gw, gq
 
 ga / :ascii         prints the number of character under the cursor.
+g8                  prints the hex value
 {count}go / :go[to] [count] 
                     go the {count} byte in the buffer.
 CTRL-L              redraws the screen.
@@ -167,6 +171,7 @@ CTRL-n / CTRL-p     serarch forward(backward)
 
 :[range]s[ubstiute]/{pattern}/{string}/[flags] [count]
 In Visual block mode, use /\%V in the pattern to have the substitute work in the block only.
+g&
 
 flags:
 c confirm each substitution yes/last/no/<Esc>/all/quit/CTRL-E/CTRL-Y
