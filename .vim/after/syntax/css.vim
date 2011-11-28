@@ -129,7 +129,7 @@ function! s:PreviewCSSColor(text)
    let text = substitute(a:text, '#\(\x\)\(\x\)\(\x\)\>', '\=s:SetMatcher(submatch(1).submatch(1).submatch(2).submatch(2).submatch(3).submatch(3), submatch(0))', 'g')
    let text = substitute(text, '#\(\x\{6\}\)\>', '\=s:SetMatcher(submatch(1), submatch(0))', 'g')
    let text = substitute(text, 'rgba\?(\(\d\{1,3}\),\s*\(\d\{1,3}\),\s*\(\d\{1,3}\)\%(,[^)]*\)\?)', '\=s:SetMatcher(s:RGBtoHex([submatch(1), submatch(2), submatch(3)]), submatch(0))', 'g')
-   let text = substitute(text, 'hsla\?(\(\d\{1,3}\),\s*\(\d\{1,3}%\?\),\s*\(\d\{1,3}%\?\)\%(,[^)]*\)\?)', '\=s:SetMatcher(s:HSLtoHex(submatch(1), submatch(2), submatch(3)), submatch(0))', 'g')
+   let text = substitute(text, 'hsla\?(\(\d\{1,3}\),\s*\(\d\{1,3}%\),\s*\(\d\{1,3}%\)\%(,[^)]*\)\?)', '\=s:SetMatcher(s:HSLtoHex(submatch(1), submatch(2), submatch(3)), submatch(0))', 'g')
 endfunction
 
 if has("gui_running") || &t_Co==256
