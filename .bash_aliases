@@ -11,7 +11,6 @@ if [ `uname -s` = Darwin ]; then
     alias show="defaults write com.apple.Finder AppleShowAllFiles -bool true && killall Finder"
     alias hide="defaults write com.apple.Finder AppleShowAllFiles -bool false && killall Finder"
 
-
     script_path=`dirname $(python -c "import os; print os.path.realpath('${BASH_SOURCE[0]}')")`
     # echo `dirname $(perl -e 'use Cwd "abs_path";print abs_path(shift)' ${BASH_SOURCE[0]})`
 else
@@ -22,5 +21,8 @@ fi
 source $script_path/.git-completion.sh
 PS1='\u@\h: \[\033[01;32m\]\w\[\033[00m\] $(__git_ps1 "(\[\033[01;34m\]%s\[\033[00m\])")\$ '
 
+cmdfu(){
+    curl "http://www.commandlinefu.com/commands/matching/$@/`echo -n $@ | base64`/plaintext";
+}
 
 # vim: ft=sh

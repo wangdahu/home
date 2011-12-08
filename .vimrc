@@ -116,7 +116,7 @@ function! s:run_script()
         let output = system(cmd)
         if len(output) | echo output | endif
         " execute '!' . cmd . ' ' . fname
-    elseif index(["html", "vb"], &ft) > -1
+    elseif index(["html", "markdown", "vb"], &ft) > -1
         try
             python import webbrowser,vim; webbrowser.open('file://' + vim.current.buffer.name)
         catch /.*/
@@ -141,7 +141,7 @@ augroup filetype_config
 
     autocmd FileType php setlocal iskeyword+=$
 
-    autocmd FileType html,php,jsp,javascript setl includeexpr=substitute(v:fname, "^/", '', '')
+    autocmd FileType html,php,jsp,javascript setl includeexpr=substitute(v:fname,'^/','','')
 
     let $PRG_EXT = s:isWin ? ".exe" : ""
     autocmd FileType c setlocal makeprg=gcc\ -o\ %<$PRG_EXT\ %
@@ -238,7 +238,7 @@ if s:isWin
     language messages zh_CN.utf-8
 endif
 
-if filereadable($HOME . '/.local.vimrc')
+if filereadable(expand('~/.local.vimrc'))
     source ~/.local.vimrc
 endif
 
