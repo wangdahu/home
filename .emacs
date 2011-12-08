@@ -31,6 +31,7 @@
 (setq default-major-mode 'text-mode)
 (setq-default make-backup-files nil)
 (setq-default show-trailing-whitespace t)   ;; whitespace-cleanup
+(setq-default indicate-buffer-boundaries 'left)
 ;; at begin of line, `kill-line` kills the whole line
 ;; (setq-default kill-whole-line t)
 (setq-default tab-width 4)
