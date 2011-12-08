@@ -1,7 +1,7 @@
 " Vim completion for HTML5 data file
 " Language:       HTML5
 " Maintainer:     othree <othree@gmail.com>
-" Last Change:    2011 Feb 1
+" Last Change:    2011 Apr 9
 
 
 " Lang Tag: {{{
@@ -62,12 +62,12 @@ let charset = [
 
 " Attributes_and_Settings: {{{
 let core_attributes = {'accesskey': [], 'class': [], 'contenteditable': ['true', 'false', ''], 'contextmenu': [], 'dir': ['ltr', 'rtl'], 'draggable': ['true', 'false'], 'hidden': ['hidden', ''], 'id': [], 'lang': lang_tag, 'spellcheck': ['true', 'false', ''], 'style': [], 'tabindex': [], 'title': []}
-let xml_attributes = {'xml:lang': lang_tag, 'xml:space': ['preserve'], 'xml:base': [], 'xmlns': []}
+let xml_attributes = {'xml:lang': lang_tag, 'xml:space': ['preserve'], 'xml:base': [], 'xmlns': ['http://www.w3.org/1999/xhtml', 'http://www.w3.org/1998/Math/MathML', 'http://www.w3.org/2000/svg', 'http://www.w3.org/1999/xlink']}
 
 let body_attributes = {}
 let global_attributes = extend(core_attributes, xml_attributes)
-if !exists('g:event_handler_attributes_complete')
-    let g:event_handler_attributes_complete = 1
+if !exists('g:html5_event_handler_attributes_complete')
+    let g:html5_event_handler_attributes_complete = 1
 endif
 
 " http://dev.w3.org/html5/spec/Overview.html#attributes-1
@@ -81,6 +81,7 @@ let attributes_value = {
     \ 'autocomplete': ['on/off', ''],
     \ 'autofocus': ['Bool', ''],
     \ 'autoplay': ['Bool', ''],
+    \ 'border': ['1', ''],
     \ 'challenge': ['Text', ''],
     \ 'charset': ['Charset', ''],
     \ 'checked': ['Bool', ''],
@@ -178,7 +179,7 @@ let attributes_value = {
     \ 'role': ['*Token', '']
 \ }
 
-if g:event_handler_attributes_complete == 1
+if g:html5_event_handler_attributes_complete == 1
     let event_handler_attributes = {'onabort': [], 'onblur': [], 'oncanplay': [], 'oncanplaythrough': [], 'onchange': [], 'onclick': [], 'oncontextmenu': [], 'ondblclick': [], 'ondrag': [], 'ondragend': [], 'ondragenter': [], 'ondragleave': [], 'ondragover': [], 'ondragstart': [], 'ondrop': [], 'ondurationchange': [], 'onemptied': [], 'onended': [], 'onerror': [], 'onfocus': [], 'onformchange': [], 'onforminput': [], 'oninput': [], 'oninvalid': [], 'onkeydown': [], 'onkeypress': [], 'onkeyup': [], 'onload': [], 'onloadeddata': [], 'onloadedmetadata': [], 'onloadstart': [], 'onmousedown': [], 'onmousemove': [], 'onmouseout': [], 'onmouseover': [], 'onmouseup': [], 'onmousewheel': [], 'onpause': [], 'onplay': [], 'onplaying': [], 'onprogress': [], 'onratechange': [], 'onreadystatechange': [], 'onscroll': [], 'onseeked': [], 'onseeking': [], 'onselect': [], 'onshow': [], 'onstalled': [], 'onsubmit': [], 'onsuspend': [], 'ontimeupdate': [], 'onvolumechange': [], 'onwaiting': []}
     let global_attributes = extend(global_attributes, event_handler_attributes)
     
@@ -258,10 +259,10 @@ if g:event_handler_attributes_complete == 1
 
     let attributes_value = extend(attributes_value, event_attributes_value)
 endif
-if !exists('g:rdfa_attributes_complete')
-    let g:rdfa_attributes_complete = 1
+if !exists('g:html5_rdfa_attributes_complete')
+    let g:html5_rdfa_attributes_complete = 1
 endif
-if g:rdfa_attributes_complete == 1
+if g:html5_rdfa_attributes_complete == 1
     " http://www.w3.org/TR/rdfa-syntax/#s_metaAttributes
     " http://www.w3.org/TR/rdfa-core/#s_syntax
     let relrev = ['chapter', 'contents', 'copyright', 'first', 'glossary', 'help', 'icon', 'index', 'last', 'license', 'meta', 'next', 'p3pv1', 'prev', 'role', 'section', 'stylesheet', 'subsection', 'start', 'top', 'up']
@@ -283,10 +284,10 @@ if g:rdfa_attributes_complete == 1
     \ }
     let attributes_value = extend(attributes_value, rdfa_attributes_value)
 endif
-if !exists('g:microdata_attributes_complete')
-    let g:microdata_attributes_complete = 1
+if !exists('g:html5_microdata_attributes_complete')
+    let g:html5_microdata_attributes_complete = 1
 endif
-if g:microdata_attributes_complete == 1
+if g:html5_microdata_attributes_complete == 1
     let microdata_attributes = {'itemid': [], 'itemscope': ['itemscope', ''], 'itemtype': [], 'itemprop': [], 'itemref': []}
     let global_attributes = extend(global_attributes, microdata_attributes)
 
@@ -304,10 +305,10 @@ endif
 " WAI_ARIA: {{{
 " Ref: http://www.w3.org/TR/wai-aria/
 " Version: Draft 15 December 2009
-if !exists('g:aria_attributes_complete')
-    let g:aria_attributes_complete = 1
+if !exists('g:html5_aria_attributes_complete')
+    let g:html5_aria_attributes_complete = 1
 endif
-if g:aria_attributes_complete == 1
+if g:html5_aria_attributes_complete == 1
     " Ref: http://www.w3.org/TR/wai-aria/roles
     " Version: Draft 15 December 2009
     let widget_role = ['alert', 'alertdialog', 'button', 'checkbox', 'combobox', 'dialog', 'gridcell', 'link', 'log', 'marquee', 'menuitem', 'menuitemcheckbox', 'menuitemradio', 'option', 'progressbar', 'radio', 'radiogroup', 'scrollbar', 'slider', 'spinbutton', 'status', 'tab', 'tabpanel', 'textbox', 'timer', 'tooltip', 'treeitem', 'combobox', 'grid', 'listbox', 'menu', 'menubar', 'radiogroup', 'tablist', 'tree', 'treegrid']
@@ -320,15 +321,15 @@ endif
 " }}}
 
 " Ref: http://dev.w3.org/html5/markup/
-" Version: Draft 29 August 2010
-let phrasing_elements = ['a', 'em', 'strong', 'small', 'mark', 'abbr', 'dfn', 'i', 'b', 'code', 'var', 'samp', 'kbd', 'sup', 'sub', 'q', 'cite', 'span', 'bdo', 'bdi', 'br', 'wbr', 'ins', 'del', 'img', 'embed', 'object', 'iframe', 'map', 'area', 'script', 'noscript', 'ruby', 'video', 'audio', 'input', 'textarea', 'select', 'button', 'label', 'output', 'datalist', 'keygen', 'progress', 'command', 'canvas', 'time', 'meter']
+" Version: Draft 05 April 2011
+let phrasing_elements = ['a', 'em', 'strong', 'small', 'mark', 'abbr', 'dfn', 'i', 'b', 'u', 'code', 'var', 'samp', 'kbd', 'sup', 'sub', 'q', 'cite', 'span', 'bdo', 'bdi', 'br', 'wbr', 'ins', 'del', 'img', 'embed', 'object', 'iframe', 'map', 'area', 'script', 'noscript', 'ruby', 'video', 'audio', 'input', 'textarea', 'select', 'button', 'label', 'output', 'datalist', 'keygen', 'progress', 'command', 'canvas', 'time', 'meter']
 
 let metadata_elements = ['link', 'style', 'meta', 'script', 'noscript', 'command']
 
 let flow_elements = phrasing_elements + ['p', 'hr', 'pre', 'ul', 'ol', 'dl', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hgroup', 'address', 'blockquote', 'ins', 'del', 'object', 'map', 'noscript', 'section', 'nav', 'article', 'aside', 'header', 'footer', 'video', 'audio', 'figure', 'table', 'form', 'fieldset', 'menu', 'canvas', 'details']
 
 " http://dev.w3.org/html5/spec/Overview.html#linkTypes
-let linktypes = ['alternate', 'archives', 'author', 'bookmark', 'external', 'first', 'help', 'icon', 'index', 'last', 'license', 'next', 'nofollow', 'noreferrer', 'pingback', 'prefetch', 'prev', 'search', 'stylesheet', 'sidebar', 'tag', 'up']
+let linktypes = ['alternate', 'author', 'bookmark', 'external', 'help', 'icon', 'license', 'next', 'nofollow', 'noreferrer', 'pingback', 'prefetch', 'prev', 'search', 'stylesheet', 'sidebar', 'tag']
 " http://googlewebmastercentral.blogspot.com/2009/02/specify-your-canonical.html
 let linkreltypes = linktypes + ['canonical']
 
@@ -706,7 +707,7 @@ let g:xmldata_html5 = {
 \ ],
 \ 'table': [
     \ ['caption', 'col', 'colgroup', 'thead', 'tfoot', 'tbody', 'tr'],
-    \ extend(copy(global_attributes), {'summary': []})
+    \ extend(copy(global_attributes), {'border': []})
 \ ],
 \ 'tbody': [
     \ ['tr'],
@@ -747,6 +748,10 @@ let g:xmldata_html5 = {
 \ 'track': [
     \ [],
     \ extend(copy(global_attributes), {'kind': ['subtitles', 'captions', 'descriptions', 'chapters', 'metadata'], 'src': [], 'charset': charset, 'srclang': lang_tag, 'label': []})
+\ ],
+\ 'u': [
+    \ phrasing_elements,
+    \ global_attributes
 \ ],
 \ 'ul': [
     \ ['li'],
