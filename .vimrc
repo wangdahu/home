@@ -45,7 +45,7 @@ set path=.,~
 set wildmode=longest:full
 set wildignore=*.swp,.DS_Store,.localized,.git,.svn
 set wildmenu
-autocmd BufEnter * if &ff != 'unix' || &fenc != 'utf-8' | setl laststatus=2 | endif
+autocmd BufRead * if &ff != 'unix' || &fenc != 'utf-8' | setl laststatus=2 | endif
 set statusline=%f\ %M[%{&ff},%{&fenc}]%y%r%=%l,%c\ \ \ %P
 set undodir=$TMP
 set undofile
@@ -168,6 +168,9 @@ command! DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
 
 " plugin config {{{
 
+" html indent
+let g:html_exclude_tags = ['html', 'style', 'script', 'body']
+
 " ToHtml
 let html_use_css = 0
 let html_use_encoding = 'UTF-8'
@@ -234,6 +237,7 @@ let Grep_Skip_Files         = '*~ *.swp'
 " }}}
 
 if s:isWin
+    let &rtp = substitute(&rtp, 'vimfiles', '.vim', 'g')
     set termencoding=cp936  " for windows console
     language messages zh_CN.utf-8
 endif
