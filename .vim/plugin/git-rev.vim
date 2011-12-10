@@ -10,16 +10,20 @@
 "   :e branch:file
 " Based on http://www.vim.org/scripts/script.php?script_id=2185
 
+if (has("win32") || has("win64"))
+    finish
+endif
+
 function s:LoadRev()
     let folder = expand("%:p:h")
     let file = expand("%:p")
-    while ! isdirectory(folder . "/.git") && folder != '/'
+    while !(isdirectory(folder . "/.git") || folder == '/')
         let folder = fnamemodify(folder, ":p:h:h")
     endwhile
     let file = substitute(file, '^'. folder .'/', '', '')
     let file = substitute(file, '^\(.*/\)\([^:]*:\)\(.*\)', '\2\1\3', '')
 
-    if ! filereadable(file) && line('$')==1
+    if !filereadable(file) && line('$')==1
         let cmd = "git show " . file
         exec 'normal :r!LANG=C ' . cmd . "\n:1d\n"
 
