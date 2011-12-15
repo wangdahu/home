@@ -15,6 +15,7 @@
 (transient-mark-mode t)
 (which-function-mode t)
 ;; (desktop-save-mode t)
+(global-auto-revert-mode)
 (pending-delete-mode t)
 (setq appt-issue-message t)
 (setq auto-save-default nil)
@@ -32,6 +33,8 @@
 (setq-default make-backup-files nil)
 (setq-default show-trailing-whitespace t)   ;; whitespace-cleanup
 (setq-default indicate-buffer-boundaries 'left)
+(setq-default cursor-type 'bar)
+;; (customize-set-variable 'scroll-bar-mode 'left)
 ;; at begin of line, `kill-line` kills the whole line
 ;; (setq-default kill-whole-line t)
 (setq-default tab-width 4)
@@ -68,6 +71,13 @@
       (comment-or-uncomment-region (line-beginning-position) (line-end-position))
     (comment-dwim arg)))
 (global-set-key (kbd "M-;") 'comment-dwim-line) ;; (kbd "M-;") = "\M-;"
+
+;; begin a new line below the cursor
+(defun begin-new-line nil
+  (interactive)
+  (end-of-line)
+  (newline-and-indent))
+(global-set-key [C-return] 'begin-new-line)
 
 (if (eq system-type "gnu/linux")
     (defun my-fullscreen ()
@@ -117,9 +127,7 @@
 
 (autoload 'markdown-mode "markdown-mode.el"
           "Major mode for editing Markdown files" t)
-(setq auto-mode-alist (cons '("\\.md" . markdown-mode) auto-mode-alist))
-(setq auto-mode-alist (cons '("\\.mkd" . markdown-mode) auto-mode-alist))
-(setq auto-mode-alist (cons '("\\.markdown" . markdown-mode) auto-mode-alist))
+(add-to-list 'auto-mode-alist '("\\.\\(md\\|mkd\\|markdown\\)$" . markdown-mode))
 
 ;; recent
 ;; (require 'recentf)
@@ -129,5 +137,8 @@
 ;; color-theme
 (require 'color-theme)
 (color-theme-euphoria)
+
+(if (file-exists-p "~/.local.emacs")
+    (load "~/.local.emacs"))
 
 ;; vim: ft=lisp
