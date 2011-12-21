@@ -1,3 +1,19 @@
+html-mode
+C-c C-t html
+C-c Tab         sgml-tags-invisible
+C-c C-f/b       sgml-skip-tag-forward/backward
+C-c del         sgml-delete-tag
+C-c /           sgml-close-tag
+C-c C-n </>     sqml-name-char
+C-c Enter       html-pragraph
+C-c 1~6         html-headline-1~6
+C-c C-c u/o     html-unordered-list/html-ordered-list
+C-c C-c p       html-list-item
+C-c C-c -       html-horizontal-rule
+C-c C-c n/h/i   html-name-anchor/html-href-anchor/html-image
+C-c C-j         html-line
+C-c C-v         browse-url-of-buffer
+
 C-x RET f       set-buffer-file-code-system
 
 Indentation
@@ -32,20 +48,21 @@ C-x =           what-cursor-position
 C-x l           count-lines-page
 M-x load-file ~/.emacs
 C-x o           other
-C-x 1           0:删除当前, 1:删除其它, 2:split, 3:vsplit, 4 b(f), 5 2:new frame, C-M-v
+C-x 0~5         0: delete-window, 1: delete-other-windows, 2: split, 3: vsplit, 4 b(f), 5 2:new frame, C-M-v
 C-x C-b, C-x b
 C-x C-s, C-x s
+C-x i           insert-file
 C-x k
 C-x Esc Esc     repeat-complex-command
 M-n, M-p, M-r, M-s
 M-x list-command
 
 C-x C-w         save as
-C-_, C-x u, C-/     undo
+C-_, C-x u, C-/             undo
 C-w             kill-region
 M-w             kill-ring-save
 M-d             kill-word
-M-t             transpose-words
+C-t/M-t/C-x C-t             transpose-words/chars/lines
 M-Del           backward-kill-word
 C-x Del         backword-kill-sentence
 M-k             kill-sentence
@@ -68,7 +85,7 @@ C-s, C-r        search forward/backword
 C-o             open-line
 C-x C-o         delete-blank-lines
 
-M-g M-g, M-g g, M-x goto-line
+M-g M-g/g       goto-line
 M-x revert-buffer, hl-line-mode, size-indication-mode
 
 C-h c           command
