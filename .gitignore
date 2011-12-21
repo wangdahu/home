@@ -1,16 +1,14 @@
 
-**
-!.gitignore
-!.gitconfig
-!.gitmodules
-!.git-completion.sh
-!.bash_aliases
-!.vimrc
-!.vim
-!.emacs
-!.emacs.d
-
+/*
+!/.gitignore
+!/.gitconfig
+!/.gitmodules
+!/.git-completion.sh
+!/.bash_aliases
+!/.vimrc
+!/.vim
+!/.emacs
+!/.emacs.d
 
 *~
 *.swp
-.DS_Store
