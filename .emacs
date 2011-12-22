@@ -63,12 +63,12 @@
            (line-beginning-position 2))))
   )
 
-;; toogles the comment state of current line
+;; toogles the comment state of lines (default to current line)
 (defun comment-dwim-line (&optional arg)
   (interactive "*P")
   (comment-normalize-vars)
-  (if (and (not (region-active-p)) (not (looking-at "[ \t]*$")))
-      (comment-or-uncomment-region (line-beginning-position) (line-end-position))
+  (if (and (not (region-active-p)) (or (not (looking-at-p "[ \t]*$")) (not (= (preceding-char) ?\x20))))
+      (comment-or-uncomment-region (line-beginning-position) (line-end-position arg))
     (comment-dwim arg)))
 (global-set-key (kbd "M-;") 'comment-dwim-line) ;; (kbd "M-;") = "\M-;"
 
@@ -78,6 +78,15 @@
   (end-of-line)
   (newline-and-indent))
 (global-set-key [C-return] 'begin-new-line)
+
+;; fix backword-kill-word
+(defun my-backword-kill-word (&optional arg)
+  (interactive "*p")
+  (if (looking-back "[ \t]" 1)
+      (while (looking-back "[ \t]" 1)
+        (backward-delete-char 1))
+    (backward-kill-word arg)))
+(global-set-key [M-backspace] 'my-backword-kill-word)
 
 (if (eq system-type "gnu/linux")
     (defun my-fullscreen ()
