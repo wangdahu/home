@@ -24,10 +24,10 @@
 ;; (setq show-paren-style 'parenthesis)
 ;; (setq show-paren-delay 0)
 (show-paren-mode t)
-(setq line-move-visual nil)
 (set-face-bold-p 'show-paren-match t)
 (set-face-foreground 'show-paren-match "red")
 (set-face-background 'show-paren-match nil)
+(setq line-move-visual nil)
 ;; (setq frame-title-format "%b - %F")
 (setq frame-title-format '("%S" (buffer-file-name "%f" (dired-directory dired-directory "%b"))))
 (setq default-frame-alist '((height . 38) (width . 110)))
@@ -83,13 +83,13 @@
 (global-set-key [C-return] 'begin-new-line)
 
 ;; fix backword-kill-word
-(defun my-backword-kill-word (&optional arg)
+(defun my-backward-kill-word (&optional arg)
   (interactive "*p")
   (if (looking-back "[ \t]" 1)
       (while (looking-back "[ \t]" 1)
         (backward-delete-char 1))
     (backward-kill-word arg)))
-(global-set-key [M-backspace] 'my-backword-kill-word)
+(global-set-key [remap backward-kill-word] 'my-backward-kill-word)
 
 (if (eq system-type "gnu/linux")
     (defun my-fullscreen ()
