@@ -7,13 +7,16 @@
 ;; (set-default-font "Consolas-12")
 (require 'linum)
 (global-linum-mode t)
-(if window-system
-    (tool-bar-mode nil))
+;; (if window-system
+;;     (tool-bar-mode nil))
+(when (functionp 'tool-bar-mode)
+  (tool-bar-mode -1))
 ;; (menu-bar-mode nil)
 (column-number-mode t)
 (size-indication-mode t)
 (transient-mark-mode t)
 (which-function-mode t)
+;; (ido-mode t)
 ;; (desktop-save-mode t)
 (global-auto-revert-mode)
 (pending-delete-mode t)
@@ -41,7 +44,6 @@
 ;; at begin of line, `kill-line` kills the whole line
 ;; (setq-default kill-whole-line t)
 (setq-default tab-width 4)
-(setq tab-stop-list nil)
 (setq tab-stop-list (mapcar (lambda (x) (* x tab-width))
                             (number-sequence 1 40)))
 (setq-default indent-tabs-mode nil)
@@ -55,7 +57,12 @@
 ;; (setq linum-format "%4d ")
 
 
+(put 'narrow-to-region 'disabled nil)   ; C-x n n / C-x n w
+(put 'upcase-region 'disabled nil)      ; C-x C-u
+
+
 ;; (global-set-key (kbd "C-x k") 'kill-this-buffer)
+
 
 ;; copy current line
 (defadvice kill-ring-save (before slickcopy activate compile)

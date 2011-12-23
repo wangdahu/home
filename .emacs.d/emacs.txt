@@ -1,3 +1,7 @@
+M-z             zap-to-char
+Remove ^M
+M-x replace-string RET C-q C-m RET RET
+
 html-mode
 C-c C-t html
 C-c Tab         sgml-tags-invisible
@@ -49,6 +53,7 @@ C-x l           count-lines-page
 M-x load-file ~/.emacs
 C-x o           other
 C-x 0~5         0: delete-window, 1: delete-other-windows, 2: split, 3: vsplit, 4 b(f), 5 2:new frame, C-M-v
+C-x C-+/-/0
 C-x C-b, C-x b
 C-x C-s, C-x s
 C-x i           insert-file
