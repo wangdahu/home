@@ -37,7 +37,8 @@
 (setq inhibit-startup-message t)
 (setq default-major-mode 'text-mode)
 (setq-default make-backup-files nil)
-(setq-default show-trailing-whitespace t)   ;; whitespace-cleanup
+(setq-default show-trailing-whitespace t)   ; whitespace-cleanup
+(setq require-final-newline t)              ; TODO: didn'it work in php-mode
 (setq-default indicate-buffer-boundaries 'left)
 (setq-default cursor-type 'bar)
 ;; (customize-set-variable 'scroll-bar-mode 'left)
@@ -61,6 +62,7 @@
 (put 'upcase-region 'disabled nil)      ; C-x C-u
 
 
+(global-set-key "\M-g" 'goto-line)      ; override M-g n / M-g p
 ;; (global-set-key (kbd "C-x k") 'kill-this-buffer)
 
 
@@ -80,7 +82,7 @@
   (if (and (not (region-active-p)) (or (not (looking-at-p "[ \t]*$")) (not (= (preceding-char) ?\x20))))
       (comment-or-uncomment-region (line-beginning-position) (line-end-position arg))
     (comment-dwim arg)))
-(global-set-key (kbd "M-;") 'comment-dwim-line) ;; (kbd "M-;") = "\M-;"
+(global-set-key (kbd "M-;") 'comment-dwim-line) ; (kbd "M-;") = "\M-;"
 
 ;; begin a new line below the cursor
 (defun begin-new-line nil
