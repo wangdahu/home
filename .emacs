@@ -178,6 +178,10 @@
 (require 'color-theme)
 (color-theme-euphoria)
 
+(require 'server)
+(unless (server-running-p)
+  (server-start))
+
 (if (file-exists-p "~/.local.emacs")
     (load "~/.local.emacs"))
 

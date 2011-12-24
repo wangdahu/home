@@ -15,6 +15,7 @@ if [ `uname -s` = Darwin ]; then
     # echo `dirname $(perl -e 'use Cwd "abs_path";print abs_path(shift)' ${BASH_SOURCE[0]})`
 else
     alias ls='ls --color=auto'
+    alias ems='emacsclient -n -a vi'
 
     script_path=`dirname $(readlink -f ${BASH_SOURCE[0]})`
 fi
