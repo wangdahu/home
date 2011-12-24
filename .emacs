@@ -38,7 +38,12 @@
 (setq default-major-mode 'text-mode)
 (setq-default make-backup-files nil)
 (setq-default show-trailing-whitespace t)   ; whitespace-cleanup
-(setq require-final-newline t)              ; TODO: didn'it work in php-mode
+;; do not show trailing whitespace in these mode
+(add-hook 'calendar-mode-hook
+          '(lambda() (setq show-trailing-whitespace nil)))
+(add-hook 'eshell-mode-hook
+          '(lambda() (setq show-trailing-whitespace nil)))
+(setq require-final-newline t)              ; TODO: didn't work in php-mode
 (setq-default indicate-buffer-boundaries 'left)
 (setq-default cursor-type 'bar)
 ;; (customize-set-variable 'scroll-bar-mode 'left)
@@ -63,7 +68,7 @@
 (put 'downcase-region 'disabled nil)    ; C-x C-l
 
 
-(global-set-key [return] 'newline-and-indent)
+(global-set-key (kbd "RET") 'newline-and-indent)
 (global-set-key "\M-g" 'goto-line)      ; override M-g n / M-g p
 ;; (global-set-key (kbd "C-x k") 'kill-this-buffer)
 
@@ -116,6 +121,12 @@
        nil 0 nil "_NET_WM_STATE" 32
        '(2 "_NET_WM_STATE_FULLSCREEN" 0)))
   (global-set-key [f11] 'my-fullscreen))
+
+
+;; eshell
+;; open file in emacs
+(defalias 'eshell/em 'find-file)
+
 
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
