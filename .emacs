@@ -60,11 +60,19 @@
 
 (put 'narrow-to-region 'disabled nil)   ; C-x n n / C-x n w
 (put 'upcase-region 'disabled nil)      ; C-x C-u
+(put 'downcase-region 'disabled nil)    ; C-x C-l
 
 
+(global-set-key [return] 'newline-and-indent)
 (global-set-key "\M-g" 'goto-line)      ; override M-g n / M-g p
 ;; (global-set-key (kbd "C-x k") 'kill-this-buffer)
 
+
+;; prevent emacs asking "Modified buffers exists; exit anyway?"
+(defadvice save-buffers-kill-emacs (around no-y-or-n activate)
+  (flet ((yes-or-no-p (&rest args) t)
+         (y-or-n-p (&rest args) t))
+    ad-do-it))
 
 ;; copy current line
 (defadvice kill-ring-save (before slickcopy activate compile)
@@ -82,7 +90,8 @@
   (if (and (not (region-active-p)) (or (not (looking-at-p "[ \t]*$")) (not (= (preceding-char) ?\x20))))
       (comment-or-uncomment-region (line-beginning-position) (line-end-position arg))
     (comment-dwim arg)))
-(global-set-key (kbd "M-;") 'comment-dwim-line) ; (kbd "M-;") = "\M-;"
+;; (global-set-key (kbd "M-;") 'comment-dwim-line) ; (kbd "M-;") = "\M-;"
+(global-set-key [remap comment-dwim] 'comment-dwim-line)
 
 ;; begin a new line below the cursor
 (defun begin-new-line nil
@@ -144,7 +153,6 @@
 (global-set-key (kbd "C-?") 'redo)
 
 (require 'php-mode)
-(define-key c-mode-base-map [(return)] 'newline-and-indent)
 
 (autoload 'markdown-mode "markdown-mode.el"
           "Major mode for editing Markdown files" t)
