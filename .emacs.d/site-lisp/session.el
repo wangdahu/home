@@ -143,7 +143,7 @@
   (defvar minibuffer-local-ns-map))
 
 
-
+ 
 ;;;;##########################################################################
 ;;;;  User options, configuration variables
 ;;;;##########################################################################
@@ -600,7 +600,7 @@ See `session-buffer-check-function'."
 
 
 
-
+ 
 ;;;;##########################################################################
 ;;;;  Store buffer places and local variables, change register contents
 ;;;;##########################################################################
@@ -1083,7 +1083,7 @@ See `session-file-alist' and `session-registers'."
     (add-hook 'kill-buffer-hook session-register-swap-out))
 
 
-
+ 
 ;;;;##########################################################################
 ;;;;  Save global variables, add functions to hooks
 ;;;;##########################################################################
