@@ -72,41 +72,41 @@
 ;; (global-set-key (kbd "C-x k") 'kill-this-buffer)
 
 
-;; prevent emacs asking "Modified buffers exists; exit anyway?"
 (defadvice save-buffers-kill-emacs (around no-y-or-n activate)
+  "prevent emacs asking 'Modified buffers exists; exit anyway?'"
   (flet ((yes-or-no-p (&rest args) t)
          (y-or-n-p (&rest args) t))
     ad-do-it))
 
-;; copy current line
 (defadvice kill-ring-save (before slickcopy activate compile)
-  " without selection"
+  "copy current line if no region active"
   (interactive
    (if mark-active (list (region-beginning) (region-end))
      (list (line-beginning-position)
-           (line-beginning-position 2))))
-  )
+           (line-beginning-position 2)))))
 
-;; toogles the comment state of lines (default to current line)
-(defun comment-dwim-line (&optional arg)
+(defun my-comment-dwim (&optional arg)
+  "toogles the comment state of lines (default to current line)"
   (interactive "*P")
   (comment-normalize-vars)
-  (if (and (not (region-active-p)) (or (not (looking-at-p "[ \t]*$")) (not (= (preceding-char) ?\x20))))
-      (comment-or-uncomment-region (line-beginning-position) (line-end-position arg))
-    (comment-dwim arg)))
-;; (global-set-key (kbd "M-;") 'comment-dwim-line) ; (kbd "M-;") = "\M-;"
-(global-set-key [remap comment-dwim] 'comment-dwim-line)
+  (if (or (region-active-p)
+          (and (looking-at-p "[ \t]*$")
+               (or (= (preceding-char) 10) (= (preceding-char) ?\x20))))
+      (comment-dwim arg)
+    (comment-or-uncomment-region (line-beginning-position) (line-end-position arg))))
+;; (global-set-key (kbd "M-;") 'my-comment-dwim) ; (kbd "M-;") = "\M-;"
+(global-set-key [remap comment-dwim] 'my-comment-dwim)
 
-;; begin a new line below the cursor
 (defun begin-new-line nil
+  "begin a new line below the cursor"
   (interactive)
   (end-of-line)
   (newline-and-indent))
 (global-set-key [C-return] 'begin-new-line)
 
-;; fix backword-kill-word
 ;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Regexp-Backslash.html#Regexp-Backslash
 (defun my-backward-kill-word (&optional arg)
+  "fix backward-kill-word"
   (interactive "*p")
   (if (looking-back "[ \t]" 1)
       (while (looking-back "[ \t]" 1)
@@ -114,14 +114,6 @@
     (backward-kill-word arg)))
 (global-set-key [remap backward-kill-word] 'my-backward-kill-word)
 (fset 'aquamacs-backward-kill-word 'my-backward-kill-word)
-
-(if (eq system-type "gnu/linux")
-    (defun my-fullscreen ()
-      (interactive)
-      (x-send-client-message
-       nil 0 nil "_NET_WM_STATE" 32
-       '(2 "_NET_WM_STATE_FULLSCREEN" 0)))
-  (global-set-key [f11] 'my-fullscreen))
 
 
 ;; eshell
