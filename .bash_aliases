@@ -10,15 +10,16 @@ if [ `uname -s` = Darwin ]; then
     # Show/hide hidden files in Finder
     alias show="defaults write com.apple.Finder AppleShowAllFiles -bool true && killall Finder"
     alias hide="defaults write com.apple.Finder AppleShowAllFiles -bool false && killall Finder"
+    alias amacs='open -b org.gnu.Aquamacs'
 
     script_path=`dirname $(python -c "import os; print os.path.realpath('${BASH_SOURCE[0]}')")`
     # echo `dirname $(perl -e 'use Cwd "abs_path";print abs_path(shift)' ${BASH_SOURCE[0]})`
 else
     alias ls='ls --color=auto'
-    alias ems='emacsclient -n -a vi'
 
     script_path=`dirname $(readlink -f ${BASH_SOURCE[0]})`
 fi
+alias em='emacsclient -n -a "vi"'
 source $script_path/.git-completion.sh
 PS1='\u@\h: \[\033[01;32m\]\w\[\033[00m\] $(__git_ps1 "(\[\033[01;34m\]%s\[\033[00m\])")\$ '
 

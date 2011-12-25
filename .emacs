@@ -7,6 +7,7 @@
 ;; (set-default-font "Consolas-12")
 (require 'linum)
 (global-linum-mode t)
+;; (setq linum-format "%4d ")
 ;; (if window-system
 ;;     (tool-bar-mode nil))
 (when (functionp 'tool-bar-mode)
@@ -14,6 +15,7 @@
 ;; (menu-bar-mode nil)
 (column-number-mode t)
 (size-indication-mode t)
+(cua-mode nil)
 (transient-mark-mode t)
 (which-function-mode t)
 ;; (ido-mode t)
@@ -39,11 +41,9 @@
 (setq-default make-backup-files nil)
 (setq-default show-trailing-whitespace t)   ; whitespace-cleanup
 ;; do not show trailing whitespace in these mode
-(add-hook 'calendar-mode-hook
+(add-hook 'eshell-mode-hook             ; TODO: calendar-mode-hook, help-mode-hook
           '(lambda() (setq show-trailing-whitespace nil)))
-(add-hook 'eshell-mode-hook
-          '(lambda() (setq show-trailing-whitespace nil)))
-(setq require-final-newline t)              ; TODO: didn't work in php-mode
+(setq require-final-newline t)          ; TODO: didn't work in php-mode
 (setq-default indicate-buffer-boundaries 'left)
 (setq-default cursor-type 'bar)
 ;; (customize-set-variable 'scroll-bar-mode 'left)
@@ -57,10 +57,9 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 ;; (mouse-avoidance-mode 'animate)
 (setq-default line-spacing 3)
-(setq display-time-24hr-format t)
+;; (setq display-time-24hr-format t)
 ;; (setq display-time-day-and-date t)
 (display-time-mode 1)
-;; (setq linum-format "%4d ")
 
 
 (put 'narrow-to-region 'disabled nil)   ; C-x n n / C-x n w
@@ -106,6 +105,7 @@
 (global-set-key [C-return] 'begin-new-line)
 
 ;; fix backword-kill-word
+;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Regexp-Backslash.html#Regexp-Backslash
 (defun my-backward-kill-word (&optional arg)
   (interactive "*p")
   (if (looking-back "[ \t]" 1)
@@ -113,6 +113,7 @@
         (backward-delete-char 1))
     (backward-kill-word arg)))
 (global-set-key [remap backward-kill-word] 'my-backward-kill-word)
+(fset 'aquamacs-backward-kill-word 'my-backward-kill-word)
 
 (if (eq system-type "gnu/linux")
     (defun my-fullscreen ()
@@ -130,30 +131,6 @@
 
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
-
-;; tabbar
-(when (require 'tabbar nil t)
-  (setq tabbar-buffer-groups-function
-        (lambda (b) (list "All Buffers")))
-  (setq tabbar-buffer-list-function
-        (lambda()
-          (remove-if
-            (lambda(buffer)
-              (find (aref (buffer-name buffer) 0) " *"))
-            (buffer-list))))
-  (tabbar-mode))
-;; (global-set-key (kbd "") 'tabbar-backward-group)
-;; (global-set-key (kbd "") 'tabbar-forward-group)
-(global-set-key (kbd "C-`") 'tabbar-backward)
-(global-set-key (kbd "<C-tab>") 'tabbar-forward)
-(set-face-attribute 'tabbar-unselected-face nil
-                    :inherit 'tabbar-default
-                    :box '(:color "#00B2BF"))
-(set-face-attribute 'tabbar-selected-face nil
-                    :inherit 'tabbar-default
-                    :background "#D7A8FF"
-                    :box '(:color "#00B2BF"))
-
 
 ;; session
 (require 'session)
@@ -176,11 +153,25 @@
 
 ;; color-theme
 (require 'color-theme)
+(color-theme-initialize)
 (color-theme-euphoria)
 
 (require 'server)
 (unless (server-running-p)
   (server-start))
+
+
+;; http://www.emacswiki.org/emacs/CustomizeAquamacs
+(when (featurep 'aquamacs)
+  ;; transparency
+  (setq transparency-level 80)
+  (set-frame-parameter nil 'alpha transparency-level)
+  (add-hook 'after-make-frame-functions
+            (lambda (selected-frame)
+              (set-frame-parameter selected-frame 'alpha transparency-level)))
+  ;; switch to fullscreen mode
+  ;; (aquamacs-toggle-full-frame)
+  (setq inhibit-startup-echo-area-message t))
 
 (if (file-exists-p "~/.local.emacs")
     (load "~/.local.emacs"))
