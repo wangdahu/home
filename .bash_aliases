@@ -20,7 +20,7 @@ else
     script_path=`dirname $(readlink -f ${BASH_SOURCE[0]})`
 fi
 source $script_path/.git-completion.sh
-PS1='\u@\h: \[\033[01;32m\]\w\[\033[00m\] (\[\033[01;34m\]$(__git_ps1 "%s")\[\033[00m\])\$ '
+PS1='\u@\h: \[\033[01;32m\]\w\[\033[00m\] $(__git_ps1 "(\[\033[01;34m\]%s\[\033[00m\])")\$ '
 
 cmdfu(){
     curl "http://www.commandlinefu.com/commands/matching/$@/`echo -n $@ | base64`/plaintext";
