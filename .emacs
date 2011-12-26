@@ -107,15 +107,17 @@
   (newline-and-indent))
 (global-set-key [C-return] 'begin-new-line)
 
-(defun kill-chars (skip-chars-func)
-  (delete-region (point) (progn (funcall skip-chars-func " \t") (point))))
+(defun delete-chars (chars &optional backward)
+  (delete-region (point)
+                 (progn (if backward (skip-chars-backward chars) (skip-chars-forward chars)) (point))))
 
 (defun my-kill-word (&optional arg)
   "fixed kill-word killing whitespace"
   (interactive "*p")
   (if (looking-at-p "[ \t]")
-      (kill-chars 'skip-chars-forward)
-    (kill-word arg)))
+      (delete-chars " \t")
+      (kill-word arg)))
+;; TODO: kill filename in minibuffer
 (global-set-key [remap kill-word] 'my-kill-word)
 (fset 'aquamacs-kill-word 'my-kill-word)
 
@@ -124,7 +126,7 @@
   "fixed backward-kill-word killing whitesapce"
   (interactive "*p")
   (if (looking-back "[ \t]" 1)
-      (kill-chars 'skip-chars-backward)
+      (delete-chars " \t" t)
     (backward-kill-word arg)))
 (global-set-key [remap backward-kill-word] 'my-backward-kill-word)
 (fset 'aquamacs-backward-kill-word 'my-backward-kill-word)
