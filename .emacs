@@ -107,13 +107,24 @@
   (newline-and-indent))
 (global-set-key [C-return] 'begin-new-line)
 
+(defun kill-chars (skip-chars-func)
+  (delete-region (point) (progn (funcall skip-chars-func " \t") (point))))
+
+(defun my-kill-word (&optional arg)
+  "fixed kill-word killing whitespace"
+  (interactive "*p")
+  (if (looking-at-p "[ \t]")
+      (kill-chars 'skip-chars-forward)
+    (kill-word arg)))
+(global-set-key [remap kill-word] 'my-kill-word)
+(fset 'aquamacs-kill-word 'my-kill-word)
+
 ;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Regexp-Backslash.html#Regexp-Backslash
 (defun my-backward-kill-word (&optional arg)
-  "fix backward-kill-word"
+  "fixed backward-kill-word killing whitesapce"
   (interactive "*p")
   (if (looking-back "[ \t]" 1)
-      (while (looking-back "[ \t]" 1)
-        (backward-delete-char 1))
+      (kill-chars 'skip-chars-backward)
     (backward-kill-word arg)))
 (global-set-key [remap backward-kill-word] 'my-backward-kill-word)
 (fset 'aquamacs-backward-kill-word 'my-backward-kill-word)
