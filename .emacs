@@ -41,9 +41,11 @@
 (setq-default make-backup-files nil)
 (setq-default show-trailing-whitespace t)   ; whitespace-cleanup
 ;; do not show trailing whitespace in these mode
-(add-hook 'eshell-mode-hook             ; TODO: calendar-mode-hook, help-mode-hook
-          '(lambda() (setq show-trailing-whitespace nil)))
-(setq require-final-newline t)          ; TODO: didn't work in php-mode
+(dolist (hook (list 'eshell-mode-hook 'calendar-mode-hook 'help-mode-hook))
+  (add-hook hook '(lambda () (setq show-trailing-whitespace nil))))
+(setq require-final-newline t)
+(add-hook 'php-mode-hook
+          '(lambda () (setq require-final-newline t)))
 (setq-default indicate-buffer-boundaries 'left)
 (setq-default cursor-type 'bar)
 ;; (customize-set-variable 'scroll-bar-mode 'left)
@@ -81,9 +83,10 @@
 (defadvice kill-ring-save (before slickcopy activate compile)
   "copy current line if no region active"
   (interactive
-   (if mark-active (list (region-beginning) (region-end))
-     (list (line-beginning-position)
-           (line-beginning-position 2)))))
+   (if mark-active
+       (progn (message "range yanked") (list (region-beginning) (region-end)))
+     (message "%s line(s) yanked" 1)
+     (list (line-beginning-position) (line-beginning-position 2)))))
 
 (defun my-comment-dwim (&optional arg)
   "toogles the comment state of lines (default to current line)"
@@ -114,6 +117,12 @@
     (backward-kill-word arg)))
 (global-set-key [remap backward-kill-word] 'my-backward-kill-word)
 (fset 'aquamacs-backward-kill-word 'my-backward-kill-word)
+
+(defun kill-other-buffers()
+  (interactive)
+  (dolist (buf (cdr (buffer-list)))
+    (kill-buffer buf)))
+(defalias 'only 'kill-other-buffers)
 
 
 ;; eshell
