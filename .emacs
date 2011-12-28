@@ -140,6 +140,7 @@
 
 ;; eshell
 ;; open file in emacs
+(setq eshell-directory-name "~/.emacs.d/.eshell")
 (defalias 'eshell/em 'find-file)
 
 
