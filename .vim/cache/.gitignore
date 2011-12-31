@@ -1,0 +1,3 @@
+# vim swap, undo and other tmp files
+*
+!/.gitignore

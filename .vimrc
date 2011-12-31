@@ -1,7 +1,7 @@
 
 let s:isWin = has("win32") || has("win64")
 let $VIMFILES = $HOME . "/.vim"
-if $TMP == "" | let $TMP = '/tmp' | endif
+let $CACHEDIR = $VIMFILES . "/cache"
 
 set nocompatible            "Use Vim settings, rather than Vi settings (much better!).
 
@@ -41,15 +41,15 @@ set sessionoptions=buffers,curdir,folds,resize,tabpages " localoptions
 set iskeyword=@,48-57,_,-
 " set spell
 set display=lastline
-set path=.,~
+set path=,,~/Documents
 set wildmode=longest:full
 set wildignore=*.swp,.DS_Store,.localized,.git,.svn
 set wildmenu
 autocmd BufRead * if &ff != 'unix' || &fenc != 'utf-8' | setl laststatus=2 | endif
 set statusline=%f\ %M[%{&ff},%{&fenc}]%y%r%=%l,%c\ \ \ %P
-set undodir=$TMP
+set undodir=$CACHEDIR
 set undofile
-set dir=$TMP//
+set dir=$CACHEDIR//
 set winaltkeys=no
 set modelines=2
 if has("gui_running")
@@ -242,8 +242,8 @@ if s:isWin
     language messages zh_CN.utf-8
 endif
 
-if filereadable(expand('~/.local.vimrc'))
-    source ~/.local.vimrc
+if filereadable(expand('~/.vimrc.local'))
+    source ~/.vimrc.local
 endif
 
 " vim: ft=vim fdm=marker

@@ -188,7 +188,7 @@
   ;; (aquamacs-toggle-full-frame)
   (setq inhibit-startup-echo-area-message t))
 
-(if (file-exists-p "~/.local.emacs")
-    (load "~/.local.emacs"))
+(if (file-exists-p "~/.emacs.local")
+    (load "~/.emacs.local"))
 
 ;; vim: ft=lisp

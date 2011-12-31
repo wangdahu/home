@@ -14,7 +14,8 @@ if !exists('g:session_autosave')
 endif
 
 if !exists('g:sessoin_path')
-    let g:session_path = $VIMFILES
+    let g:session_path = $HOME . (isdirectory($HOME . '/.vim') ? '/.vim' : '/vimfiles') . '/cache'
+    if !isdirectory(g:session_path) | call mkdir(g:session_path, 'p') | endif
 endif
 
 if !exists('g:session_maxcount')

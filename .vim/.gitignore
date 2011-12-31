@@ -1,7 +1,6 @@
 
-*.session
-.netrwhist
-GetLatest/Installed
-vimbin/*.exe
-vimbin/*.dll
-vimbin/*.bat
+/.netrwhist
+/GetLatest/Installed
+/vimbin/*.exe
+/vimbin/*.dll
+/vimbin/*.bat
