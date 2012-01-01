@@ -28,9 +28,17 @@ function! s:savewin()
     while len(files) >= g:session_maxcount
         call delete(remove(files, 0))
     endwh
-    if g:session_autosave
+    if g:session_autosave && !s:is_noname()
         call s:save_session('')
     endif
+endfunction
+
+" return 1 if the buffers only '[No Name]'
+function! s:is_noname()
+    redir => bufstr
+        buffers
+    redir END
+    return len(split(bufstr, '\n')) == 1 && bufstr =~ '\[No Name]'
 endfunction
 
 function s:save_session(session_name)
