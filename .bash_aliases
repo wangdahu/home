@@ -7,10 +7,30 @@ alias ...='cd ../../'
 
 if [ `uname -s` = Darwin ]; then
     alias ls='ls -G'
-    # Show/hide hidden files in Finder
-    alias show="defaults write com.apple.Finder AppleShowAllFiles -bool true && killall Finder"
-    alias hide="defaults write com.apple.Finder AppleShowAllFiles -bool false && killall Finder"
     alias amacs='open -b org.gnu.Aquamacs'
+
+    # show or hide All Files/Desktop Icons/Filename extentions in Finder
+    # Usage:
+    #       show <command> [switch]
+    #       command     can be allfile/desktop/ext
+    # $ show allfile
+    # or
+    # $ show desktop 1
+    show() {
+        package="com.apple.Finder"
+        if [ "$1" = allfile ]; then name="AppleShowAllFiles";
+        elif [ "$1" = desktop ]; then name="CreateDesktop";
+        elif [ "$1" = ext ]; then name="AppleShowAllExtensions";package="NSGlobalDomain";
+        fi
+        if [ "$2" = "" ]; then
+            state=`defaults read $package $name`
+            if [ "$state" = 0 ]; then val=1; fi
+        else
+            val="$2";
+        fi
+        if [ "$val" = 1 ]; then val=true; else val=false; fi
+        defaults write $package $name -bool $val && killall Finder
+    }
 
     script_path=`dirname $(python -c "import os; print os.path.realpath('${BASH_SOURCE[0]}')")`
     # echo `dirname $(perl -e 'use Cwd "abs_path";print abs_path(shift)' ${BASH_SOURCE[0]})`
@@ -32,7 +52,7 @@ sw() {
     fi
 }
 
-cmdfu(){
+cmdfu() {
     curl "http://www.commandlinefu.com/commands/matching/$@/`echo -n $@ | base64`/plaintext";
 }
 
