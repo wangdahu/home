@@ -38,7 +38,7 @@ function! s:is_noname()
     redir => bufstr
         buffers
     redir END
-    return len(split(bufstr, '\n')) == 1 && bufstr =~ '\[No Name]'
+    return len(split(bufstr, '\n')) == 1 && bufname('') == ''
 endfunction
 
 function s:save_session(session_name)
