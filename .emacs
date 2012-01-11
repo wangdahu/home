@@ -26,6 +26,7 @@
 (setq auto-save-default nil)
 (setq vc-follow-symlinks t)
 (setq x-select-enable-clipboard t)
+(setq delete-by-moving-to-trash t)
 ;; (setq show-paren-style 'parenthesis)
 ;; (setq show-paren-delay 0)
 (show-paren-mode t)
@@ -41,7 +42,7 @@
 (setq-default make-backup-files nil)
 (setq-default show-trailing-whitespace t)   ; whitespace-cleanup
 ;; do not show trailing whitespace in these mode
-(dolist (hook (list 'eshell-mode-hook 'calendar-mode-hook 'help-mode-hook))
+(dolist (hook '(eshell-mode-hook calendar-mode-hook help-mode-hook))
   (add-hook hook '(lambda () (setq show-trailing-whitespace nil))))
 (setq require-final-newline t)
 (add-hook 'php-mode-hook
@@ -65,13 +66,19 @@
 
 
 (put 'narrow-to-region 'disabled nil)   ; C-x n n / C-x n w
+                                        ; C-x n d   narrow-to-defun
 (put 'upcase-region 'disabled nil)      ; C-x C-u
 (put 'downcase-region 'disabled nil)    ; C-x C-l
 
 
+;; set keys
 (global-set-key (kbd "RET") 'newline-and-indent)
 (global-set-key "\M-g" 'goto-line)      ; override M-g n / M-g p
 ;; (global-set-key (kbd "C-x k") 'kill-this-buffer)
+
+
+;; hooks
+(add-hook 'before-save-hook 'time-stamp)
 
 
 (defadvice save-buffers-kill-emacs (around no-y-or-n activate)
@@ -157,8 +164,8 @@
 
 (require 'php-mode)
 
-(autoload 'markdown-mode "markdown-mode.el"
-          "Major mode for editing Markdown files" t)
+(autoload 'markdown-mode "markdown-mode"
+  "Major mode for editing Markdown files" t)
 (add-to-list 'auto-mode-alist '("\\.\\(md\\|mkd\\|markdown\\)$" . markdown-mode))
 
 ;; recent
