@@ -41,24 +41,29 @@ function! s:HSLtoHex(h,s,l)
   return s:RGBtoHex(rgb)
 endfunction
 
-if has('gui_running')
 function! s:SetGroup(group, clr)
    let rgb = s:HextoRGB(a:clr)
-   exe 'hi '.a:group.' guibg=#'.a:clr 'guifg=#'.(s:GetBG(rgb) ? 'ffffff' : '000000')
-endfunction
-elseif &t_Co == 256
-function! s:SetGroup(group, clr)
-   let rgb = s:HextoRGB(a:clr)
-   exe 'hi '.a:group.' ctermbg='.s:Rgb2xterm(rgb) 'ctermfg='.s:Rgb2xterm(s:GetBG(rgb) ? [255, 255, 255] : [0, 0, 0])
+   exe 'syn cluster cssColors add='.a:group
+   exe 'hi' a:group 'guibg=#'.a:clr 'guifg=#'.(s:GetBG(rgb) ? 'ffffff' : '000000')
 endfunction
 
-"" the 6 value iterations in the xterm color cube
+if &t_Co == 256
+
+" SetGroup for xterm256
+redir => s:source
+silent! function s:SetGroup
+redir END
+let s:source = substitute( s:source, '\n\zs\d\+', '', 'g')
+let s:source = substitute( s:source , 'function\zs', '!', '')
+exe substitute( s:source, 'guibg.*)', "ctermbg='.s:Rgb2xterm(rgb) 'ctermfg='.s:Rgb2xterm(s:GetBG(rgb) ? [255, 255, 255] : [0, 0, 0])", '')
+
+" the 6 value iterations in the xterm color cube
 let s:valuerange = [ 0x00, 0x5F, 0x87, 0xAF, 0xD7, 0xFF ]
-"
-"" 16 basic colors
+
+" 16 basic colors
 let s:basic16 = [ [ 0x00, 0x00, 0x00 ], [ 0xCD, 0x00, 0x00 ], [ 0x00, 0xCD, 0x00 ], [ 0xCD, 0xCD, 0x00 ], [ 0x00, 0x00, 0xEE ], [ 0xCD, 0x00, 0xCD ], [ 0x00, 0xCD, 0xCD ], [ 0xE5, 0xE5, 0xE5 ], [ 0x7F, 0x7F, 0x7F ], [ 0xFF, 0x00, 0x00 ], [ 0x00, 0xFF, 0x00 ], [ 0xFF, 0xFF, 0x00 ], [ 0x5C, 0x5C, 0xFF ], [ 0xFF, 0x00, 0xFF ], [ 0x00, 0xFF, 0xFF ], [ 0xFF, 0xFF, 0xFF ] ]
-:
-function! s:Xterm2rgb(color) 
+
+function! s:Xterm2rgb(color)
    let rgb = [0, 0, 0]
    if a:color<16
       " 16 basic colors
@@ -109,19 +114,17 @@ function! s:SetMatcher(clr,pat)
    let pattern = a:pat
    if pattern =~ '\>$' | let pattern .= '\>' | endif
    redir => currentmatch
-      silent! exe 'syn list '.group
+      silent! exe 'syn list' group
    redir END
    if stridx( currentmatch, 'match /'.pattern.'/' ) >= 0 | return 0 | endif
-   exe 'syn match '.group.' /'.pattern.'/ contained'
-   exe 'syn cluster cssColors add='.group
+   exe 'syn match' group '/'.pattern.'/ contained'
    call s:SetGroup(group, a:clr)
    return 1
 endfunction
 
 function! s:SetNamedColor(clr, name)
    let group = 'cssColor'. a:clr
-   exe 'syn keyword '.group.' '.a:name.' contained'
-   exe 'syn cluster cssColors add='.group
+   exe 'syn keyword' group a:name 'contained'
    call s:SetGroup(group, a:clr)
 endfunction
 
