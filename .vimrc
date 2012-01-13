@@ -15,6 +15,7 @@ set tabstop=4
 set expandtab
 set shiftwidth=4            " << , >>
 set softtabstop=4           " backspace
+set shiftround
 " set smartindent
 " set foldmethod=indent
 set backspace=indent,eol,start  " allow backspacing over everything in insert mode
@@ -34,6 +35,8 @@ set ruler                   " show the cursor position all the time
 set showcmd                 " display incomplete commands
 set hlsearch
 set incsearch               " do incremental searching
+set nostartofline
+set nojoinspaces            " do not insert two spaces after [.?!] when join lines
 set complete=.,b,d,i,k,t,u,w
 set diffopt=vertical
 set splitright splitbelow
@@ -41,7 +44,7 @@ set sessionoptions=buffers,curdir,folds,resize,tabpages " localoptions
 set iskeyword=@,48-57,_,-
 " set spell
 set display=lastline
-set path=,,~/Documents
+set path=,,~/,~/Documents
 set wildmode=longest:full
 set wildignore=*.swp,.DS_Store,.localized,.git,.svn
 set wildmenu
@@ -147,6 +150,8 @@ augroup filetype_config
     autocmd FileType c setlocal makeprg=gcc\ -o\ %<$PRG_EXT\ %
     autocmd FileType cpp setlocal makeprg=g++\ -o\ %<$PRG_EXT\ %
 
+    autocmd FileType vim,help setlocal keywordprg=:help
+
     " When editing a file, always jump to the last known cursor position.
     " And open enough folds to make the cursor is not folded
     " Don't do it when the position is invalid or when inside an event handler
@@ -165,6 +170,8 @@ augroup END " }}}
 " window
 command! DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
             \| wincmd p | diffthis
+
+command! W exe 'silent write !sudo tee %'
 
 " plugin config {{{
 
