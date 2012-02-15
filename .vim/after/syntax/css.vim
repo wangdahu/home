@@ -92,7 +92,7 @@ for c in range(0, 254)
    call add(s:colortable, s:Xterm2rgb(c))
 endfor
 
-" selects the nearest xterm color for a rgb value like #FF0000
+" selects the nearest xterm color for a rgb value like [255, 0, 0]
 function! s:Rgb2xterm(color)
    let best_match=0
    let smallest_distance = 10000000000
