@@ -168,6 +168,9 @@
   "Major mode for editing Markdown files" t)
 (add-to-list 'auto-mode-alist '("\\.\\(md\\|mkd\\|markdown\\)$" . markdown-mode))
 
+(require 'zencoding-mode)
+(add-hook 'sgml-mode-hook 'zencoding-mode)
+
 ;; recent
 ;; (require 'recentf)
 (recentf-mode 1)
