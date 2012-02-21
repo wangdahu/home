@@ -1,3 +1,7 @@
+keep-lines flush-lines
+how-many
+occur multi-occur
+
 M-z             zap-to-char
 Remove ^M
 M-x replace-string RET C-q C-m RET RET

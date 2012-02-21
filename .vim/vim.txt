@@ -32,6 +32,7 @@ CTRL-C              quit command-line without executing
 
 
 ls | vim -
+vim -r  List swap files and exit, *recover*
 :args *.vim
 :argdo {cmd}
 

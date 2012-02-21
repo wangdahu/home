@@ -26,7 +26,19 @@
 (setq auto-save-default nil)
 (setq vc-follow-symlinks t)
 (setq x-select-enable-clipboard t)
+
+;; delete moving to trash
 (setq delete-by-moving-to-trash t)
+(defmacro bypass-trash-in-function (fun)
+  `(defadvice ,fun (around no-trash activate)
+     "Ignore `delete-by-moving-to-trash' inside this function"
+     (let (delete-by-moving-to-trash)
+       ad-do-it)))
+;; Any server function that may delete the server file should never
+;; move it to trash.
+(mapc (lambda (fun) (eval `(bypass-trash-in-function ,fun)))
+      '(server-start server-sentinel server-force-delete))
+
 ;; (setq show-paren-style 'parenthesis)
 ;; (setq show-paren-delay 0)
 (show-paren-mode t)
@@ -56,7 +68,8 @@
 (setq tab-stop-list (mapcar (lambda (x) (* x tab-width))
                             (number-sequence 1 40)))
 (setq-default indent-tabs-mode nil)
-(setq c-basic-offset 4)
+(setq c-basic-offset 4
+      sgml-basic-offset 4)
 (fset 'yes-or-no-p 'y-or-n-p)
 ;; (mouse-avoidance-mode 'animate)
 (setq-default line-spacing 3)
