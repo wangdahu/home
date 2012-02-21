@@ -4,10 +4,11 @@ alias la='ls -A'
 alias grep='grep --color=auto'
 alias ..='cd ..'
 alias ...='cd ../../'
+alias py=python
 
 if [ `uname -s` = Darwin ]; then
     alias ls='ls -G'
-    alias amacs='open -b org.gnu.Aquamacs'
+    alias aq='open -b org.gnu.Aquamacs'
 
     # show or hide All Files/Desktop Icons/Filename extentions in Finder
     # Usage:
@@ -18,10 +19,11 @@ if [ `uname -s` = Darwin ]; then
     # $ show desktop 1
     show() {
         package="com.apple.Finder"
-        if [ "$1" = allfile ]; then name="AppleShowAllFiles";
-        elif [ "$1" = desktop ]; then name="CreateDesktop";
-        elif [ "$1" = ext ]; then name="AppleShowAllExtensions";package="NSGlobalDomain";
-        fi
+        case ${1:-allfile} in
+            allfile) name="AppleShowAllFiles";;
+            desktop) name="CreateDesktop";;
+            ext) name="AppleShowAllExtensions";package="NSGlobalDomain";;
+        esac
         if [ "$2" = "" ]; then
             state=`defaults read $package $name`
             if [ "$state" = 0 ]; then val=1; fi
@@ -39,7 +41,7 @@ else
 
     script_path=`dirname $(readlink -f ${BASH_SOURCE[0]})`
 fi
-alias em='emacsclient -n -a "vi"'
+alias em='emacsclient -na "vi"'
 source $script_path/.git-completion.sh
 PS1='\u@\h: \[\033[01;32m\]\w\[\033[00m\] $(__git_ps1 "(\[\033[01;34m\]%s\[\033[00m\])")\$ '
 
