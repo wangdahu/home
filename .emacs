@@ -159,13 +159,16 @@
 
 
 ;; eshell
-;; open file in emacs
 (setq eshell-directory-name "~/.emacs.d/.eshell")
+;; open file in emacs
 (defalias 'eshell/em 'find-file)
 
 
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
+
+(require 'ibuffer)
+(global-set-key [remap list-buffers] 'ibuffer)
 
 ;; session
 (require 'session)
@@ -192,7 +195,13 @@
 ;; color-theme
 (require 'color-theme)
 (color-theme-initialize)
-(color-theme-euphoria)
+(setq color-themes [color-theme-jsc-light color-theme-calm-forest color-theme-high-contrast color-theme-deep-blue
+                                          color-theme-ramangalahy color-theme-euphoria color-theme-marquardt])
+(add-hook 'after-init-hook
+          '(lambda ()
+             (funcall (aref color-themes
+                            (% (date-to-day (format-time-string "%Y-%m-%d %R"))
+                               (length color-themes))))))
 
 (require 'server)
 (unless (server-running-p)

@@ -1,6 +1,9 @@
 keep-lines flush-lines
 how-many
 occur multi-occur
+align-regexp
+C-x w h         highlight-regexp
+lgrep
 
 M-z             zap-to-char
 Remove ^M
@@ -84,6 +87,7 @@ M-y             yank-pop
 append-to-buffer, prepend-to-buffer, copy-to-buffer, insert-buffer, append-to-file
 
 C-s, C-r        search forward/backword
+C-M-S, C-M-r    regex search
      C-w
      C-y
      M-y
