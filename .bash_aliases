@@ -58,4 +58,13 @@ cmdfu() {
     curl "http://www.commandlinefu.com/commands/matching/$@/`echo -n $@ | base64`/plaintext";
 }
 
+st() {
+    editor=${2:-echo};
+    if [ "$1" = "" ]; then
+        git status -s | nl -w3
+    else
+        $editor $3 "$(git status -s | nl -w3 | head -n$1 | tail -n1 | cut -c8-)"
+    fi
+}
+
 # vim: ft=sh
