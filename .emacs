@@ -120,42 +120,29 @@
 ;; (global-set-key (kbd "M-;") 'my-comment-dwim) ; (kbd "M-;") = "\M-;"
 (global-set-key [remap comment-dwim] 'my-comment-dwim)
 
-(defun begin-new-line nil
+(defun begin-new-line (&optional args)
   "begin a new line below the cursor"
-  (interactive)
-  (end-of-line)
+  (interactive "p")
+  (end-of-line args)
   (newline-and-indent))
 (global-set-key [C-return] 'begin-new-line)
-
-(defun delete-chars (chars &optional backward)
-  (delete-region (point)
-                 (progn (if backward (skip-chars-backward chars) (skip-chars-forward chars)) (point))))
-
-(defun my-kill-word (&optional arg)
-  "fixed kill-word killing whitespace"
-  (interactive "*p")
-  (if (looking-at-p "[ \t]")
-      (delete-chars " \t")
-      (kill-word arg)))
-;; TODO: kill filename in minibuffer
-(global-set-key [remap kill-word] 'my-kill-word)
-(fset 'aquamacs-kill-word 'my-kill-word)
-
-;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Regexp-Backslash.html#Regexp-Backslash
-(defun my-backward-kill-word (&optional arg)
-  "fixed backward-kill-word killing whitesapce"
-  (interactive "*p")
-  (if (looking-back "[ \t]" 1)
-      (delete-chars " \t" t)
-    (backward-kill-word arg)))
-(global-set-key [remap backward-kill-word] 'my-backward-kill-word)
-(fset 'aquamacs-backward-kill-word 'my-backward-kill-word)
 
 (defun kill-other-buffers()
   (interactive)
   (dolist (buf (cdr (buffer-list)))
     (kill-buffer buf)))
 (defalias 'only 'kill-other-buffers)
+
+(defun kill-thing ()
+   (interactive)
+   (let ((text (symbol-at-point)))
+     (if (not text)
+         (message "no symbol at point")
+       (message "`%s' yanked" text)
+       (kill-new (format "%s" text)))))
+(global-set-key (kbd "M-W") 'kill-thing)
+
+(global-set-key (kbd "C-S-k") '(lambda () (interactive) (kill-line 0)))
 
 
 ;; eshell
@@ -195,13 +182,12 @@
 ;; color-theme
 (require 'color-theme)
 (color-theme-initialize)
-(setq color-themes [color-theme-jsc-light color-theme-calm-forest color-theme-high-contrast color-theme-deep-blue
+(setq my-themes [color-theme-jsc-light color-theme-calm-forest color-theme-high-contrast color-theme-deep-blue
                                           color-theme-ramangalahy color-theme-euphoria color-theme-marquardt])
 (add-hook 'after-init-hook
           '(lambda ()
-             (funcall (aref color-themes
-                            (% (date-to-day (format-time-string "%Y-%m-%d %R"))
-                               (length color-themes))))))
+             (funcall (aref my-themes
+                            (% (date-to-day (format-time-string "%Y-%m-%d %R" nil t)) (length my-themes))))))
 
 (require 'server)
 (unless (server-running-p)

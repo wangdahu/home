@@ -73,6 +73,7 @@ M-x list-command
 C-x C-w         save as
 C-_, C-x u, C-/             undo
 C-w             kill-region
+C-M-w           append-next-kill
 M-w             kill-ring-save
 M-d             kill-word
 C-t/M-t/C-x C-t             transpose-words/chars/lines
