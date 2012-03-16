@@ -57,8 +57,6 @@
 (dolist (hook '(eshell-mode-hook calendar-mode-hook help-mode-hook))
   (add-hook hook '(lambda () (setq show-trailing-whitespace nil))))
 (setq require-final-newline t)
-(add-hook 'php-mode-hook
-          '(lambda () (setq require-final-newline t)))
 (setq-default indicate-buffer-boundaries 'left)
 (setq-default cursor-type 'bar)
 ;; (customize-set-variable 'scroll-bar-mode 'left)
@@ -166,6 +164,20 @@
 (global-set-key (kbd "C-?") 'redo)
 
 (require 'php-mode)
+(add-hook 'php-mode-hook
+          '(lambda ()
+            (setq require-final-newline t
+                  comment-start "//" comment-end "")
+            (defun ywb-php-lineup-arglist-intro (langelem)
+              (save-excursion
+                (goto-char (cdr langelem))
+                (vector (+ (current-column) c-basic-offset))))
+            (defun ywb-php-lineup-arglist-close (langelem)
+              (save-excursion
+                (goto-char (cdr langelem))
+                (vector (current-column))))
+            (c-set-offset 'arglist-intro 'ywb-php-lineup-arglist-intro)
+            (c-set-offset 'arglist-close 'ywb-php-lineup-arglist-close)))
 
 (autoload 'markdown-mode "markdown-mode"
   "Major mode for editing Markdown files" t)
