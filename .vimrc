@@ -173,6 +173,19 @@ command! DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
 
 command! W exe 'silent write !sudo tee %'
 
+" locate file in Finder
+function! s:open(path)
+    let path = shellescape(a:path != '' ? a:path : expand('%'))
+    let cmd = 'open '
+    if executable('explorer')
+       let cmd = 'explorer /select,'
+    elseif executable('nautilus') " ubuntu
+       let cmd = 'nautilus -n '
+    endif
+    call system(cmd . path)
+endfunction
+command! -nargs=? -complete=file Open call s:open(<q-args>)
+
 " plugin config {{{
 
 " html indent
