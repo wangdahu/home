@@ -91,6 +91,16 @@ cnoremap <C-b> <Left>
 cnoremap <M-f> <S-Right>
 cnoremap <M-b> <S-Left>
 
+" search selected text
+function! s:search()
+    let old_reg = getreg('"')
+    let old_regtype = getregtype('"')
+    normal gvy
+    let @/ = getreg('"')
+    call setreg('"', old_reg, old_regtype)
+endfunction
+vnoremap * :<C-u>call <SID>search()<CR>/<C-r>/<CR>
+vnoremap # :<C-u>call <SID>search()<CR>?<C-r>/<CR>
 
 function! Make()
     if &modified | silent write | endif
@@ -173,7 +183,7 @@ command! DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
 
 command! W exe 'silent write !sudo tee %'
 
-" locate file in Finder
+" locate file in Finder {{{
 function! s:open(path)
     let path = shellescape(a:path != '' ? a:path : expand('%'))
     let cmd = 'open '
@@ -185,6 +195,7 @@ function! s:open(path)
     call system(cmd . path)
 endfunction
 command! -nargs=? -complete=file Open call s:open(<q-args>)
+" }}}
 
 " plugin config {{{
 
