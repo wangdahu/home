@@ -186,7 +186,7 @@ command! W exe 'silent write !sudo tee %'
 " locate file in Finder {{{
 function! s:open(path)
     let path = shellescape(a:path != '' ? a:path : expand('%'))
-    let cmd = 'open '
+    let cmd = 'open -R '
     if executable('explorer')
        let cmd = 'explorer /select,'
     elseif executable('nautilus') " ubuntu
