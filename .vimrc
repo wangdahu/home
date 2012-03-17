@@ -91,16 +91,16 @@ cnoremap <C-b> <Left>
 cnoremap <M-f> <S-Right>
 cnoremap <M-b> <S-Left>
 
-" search selected text
-function! s:search()
+" search for visually selected text
+function! s:search(type)
     let old_reg = getreg('"')
     let old_regtype = getregtype('"')
     normal gvy
-    let @/ = getreg('"')
+    let @/ = substitute(escape(@", a:type . '.\*$^~['), '\_s\+', '\\_s\\+', 'g')
     call setreg('"', old_reg, old_regtype)
 endfunction
-vnoremap * :<C-u>call <SID>search()<CR>/<C-r>/<CR>
-vnoremap # :<C-u>call <SID>search()<CR>?<C-r>/<CR>
+vnoremap * :<C-u>call <SID>search('/')<CR>/<C-r>/<CR>
+vnoremap # :<C-u>call <SID>search('?')<CR>?<C-r>/<CR>
 
 function! Make()
     if &modified | silent write | endif
