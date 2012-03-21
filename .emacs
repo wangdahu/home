@@ -74,6 +74,9 @@
 ;; (setq display-time-24hr-format t)
 ;; (setq display-time-day-and-date t)
 (display-time-mode 1)
+(windmove-default-keybindings 'meta)
+(setq scroll-margin 3
+      scroll-conservatively 9999)
 
 
 (put 'narrow-to-region 'disabled nil)   ; C-x n n / C-x n w
@@ -131,14 +134,17 @@
     (kill-buffer buf)))
 (defalias 'only 'kill-other-buffers)
 
-(defun kill-thing ()
+(defun kill-thing (&optional arg)
    (interactive)
-   (let ((text (symbol-at-point)))
+   (let ((text (or arg (symbol-at-point))))
      (if (not text)
          (message "no symbol at point")
        (message "`%s' yanked" text)
        (kill-new (format "%s" text)))))
+;; copy symbol at point
 (global-set-key (kbd "M-W") 'kill-thing)
+;; copy filename
+(global-set-key (kbd "C-M-w") '(lambda () (interactive) (kill-thing (buffer-file-name))))
 
 (global-set-key (kbd "C-S-k") '(lambda () (interactive) (kill-line 0)))
 
@@ -152,12 +158,11 @@
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
 
+(require 'saveplace)
+(setq-default save-place t)
+
 (require 'ibuffer)
 (global-set-key [remap list-buffers] 'ibuffer)
-
-;; session
-(require 'session)
-(add-hook 'after-init-hook 'session-initialize)
 
 ;; redo+
 (require 'redo+)
