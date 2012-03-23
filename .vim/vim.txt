@@ -1,10 +1,14 @@
 http://www.ibm.com/developerworks/cn/linux/l-vim-script-5/
 http://code.google.com/p/vimcolorschemetest/
 
+:0put=range(1,100)  insert from line 0
+:for i in range(1,99)|put='192.168.1.'.i|endfor
+
 gv
 :w !sudo tee %
 g<C-g>              Prints the current position of the cursor in five ways:
                     Columnu, Line, Word, Charcter and Byte.
+1<C-g>
 :=                  Print the last line number
 :tab ball
 :only

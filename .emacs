@@ -75,7 +75,7 @@
 ;; (setq display-time-day-and-date t)
 (display-time-mode 1)
 (windmove-default-keybindings 'meta)
-(setq scroll-margin 3
+(setq scroll-margin 2
       scroll-conservatively 9999)
 
 

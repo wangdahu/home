@@ -5,6 +5,7 @@ alias grep='grep --color=auto'
 alias ..='cd ..'
 alias ...='cd ../../'
 alias py=python
+alias so=source
 
 if [ `uname -s` = Darwin ]; then
     alias ls='ls -G'
@@ -24,7 +25,7 @@ if [ `uname -s` = Darwin ]; then
             desktop) name="CreateDesktop";;
             ext) name="AppleShowAllExtensions";package="NSGlobalDomain";;
         esac
-        if [ "$2" = "" ]; then
+        if [ -z "$2" ]; then
             state=`defaults read $package $name`
             if [ "$state" = 0 ]; then val=1; fi
         else
@@ -54,13 +55,34 @@ sw() {
     fi
 }
 
+cdl() { cd "$*" && ls; }
+
+# Jump up to any directory above the current one
+upto() { cd "${PWD/\/$@\/*//$@}"; }
+_complete_upto() {
+    local IFS=$'\n'
+    local word=${COMP_WORDS[COMP_CWORD]}
+    COMPREPLY=($(echo ${PWD#/} | sed 's|/|\n|g' | grep -i "^$word" | sed -e 's| |\\ |g'))
+}
+complete -F _complete_upto upto
+
+# Create a data URI from an image
+datauri() {
+    local file=$1
+    if [[ "$1" =~ ^https?:// ]]; then
+        file=/tmp/${1##*/}
+        curl -o "$file" "$1"
+    fi
+    [ -f "$file" ] && echo "data:image/${1##*.};base64,$(openssl base64 -in "$file")" | tr -d '\n'
+}
+
 cmdfu() {
-    curl "http://www.commandlinefu.com/commands/matching/$@/`echo -n $@ | base64`/plaintext";
+    curl "http://www.commandlinefu.com/commands/matching/$@/`echo -n $@ | openssl base64`/plaintext";
 }
 
 st() {
-    editor=${2:-echo};
-    if [ "$1" = "" ]; then
+    local editor=${2:-echo};
+    if [ -z "$1" ]; then
         git status -s | nl -w3
     else
         $editor $3 "$(git status -s | nl -w3 | head -n$1 | tail -n1 | cut -c8-)"
