@@ -6,6 +6,7 @@ alias ..='cd ..'
 alias ...='cd ../../'
 alias py=python
 alias so=source
+complete -W "$(sed -E 's/[, ].*//' ~/.ssh/known_hosts)" ssh
 
 if [ `uname -s` = Darwin ]; then
     alias ls='ls -G'
@@ -19,21 +20,20 @@ if [ `uname -s` = Darwin ]; then
     # or
     # $ show desktop 1
     show() {
-        package="com.apple.Finder"
+        local package="com.apple.Finder"
+        local name="AppleShowAllFiles"
         case ${1:-allfile} in
-            allfile) name="AppleShowAllFiles";;
             desktop) name="CreateDesktop";;
             ext) name="AppleShowAllExtensions";package="NSGlobalDomain";;
         esac
+        local val="${2:-1}"
         if [ -z "$2" ]; then
-            state=`defaults read $package $name`
-            if [ "$state" = 0 ]; then val=1; fi
-        else
-            val="$2";
+            [ `defaults read $package $name` = 1 ] && val=0
         fi
         if [ "$val" = 1 ]; then val=true; else val=false; fi
         defaults write $package $name -bool $val && killall Finder
     }
+    complete -W "allfile desktop ext" show
 
     script_path=`dirname $(python -c "import os; print os.path.realpath('${BASH_SOURCE[0]}')")`
     # echo `dirname $(perl -e 'use Cwd "abs_path";print abs_path(shift)' ${BASH_SOURCE[0]})`
@@ -54,8 +54,6 @@ sw() {
         cp "$1"{,~}
     fi
 }
-
-cdl() { cd "$*" && ls; }
 
 # Jump up to any directory above the current one
 upto() { cd "${PWD/\/$@\/*//$@}"; }
