@@ -84,11 +84,13 @@ cmdfu() {
 }
 
 st() {
-    local editor=${2:-echo};
     if [ -z "$1" ]; then
         git status -s | nl -w3
     else
-        $editor $3 "$(git status -s | nl -w3 | head -n$1 | tail -n1 | cut -c8-)"
+        local num=$1
+        local editor=${2:-echo}
+        shift 2
+        $editor $* "$(git status -s | nl -w3 | head -n$num | tail -n1 | cut -c8-)"
     fi
 }
 
