@@ -61,7 +61,10 @@ if has("gui_running")
     set guioptions-=T           " hide tool bar
     set guioptions-=m           " hide menu bar
     autocmd Filetype javascript setlocal makeprg=jsl\ -nologo\ -nofilelisting\ -nosummary\ -nocontext\ -conf\ $VIMFILES/vimbin/jsl.conf\ -process\ %
-    autocmd BufWritePost *.js call Make()
+    autocmd FileType php
+                \ setlocal makeprg=php\ -l\ -n\ -d\ html_errors=off\ % |
+                \ setlocal errorformat=%m\ in\ %f\ on\ line\ %l
+    autocmd BufWritePost *.js,*.php,*.phtml call Make()
 endif
 
 let mapleader=';'           " define before key mappings
