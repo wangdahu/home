@@ -145,7 +145,8 @@ endif
 augroup filetype_config
     autocmd!
 
-    autocmd BufRead,BufNewFile *.json set filetype=javascript
+    autocmd BufRead,BufNewFile *.json   set filetype=javascript
+    autocmd BufRead,BufNewFile *.less   set filetype=less       syntax=less
 
     autocmd Filetype javascript setlocal dictionary=$VIMFILES/dict/javascript.dict
 
