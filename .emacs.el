@@ -14,7 +14,10 @@
   (interactive)
   (delete-window))
 
-(server-start)
+;; (server-start)
+
+;; 默认模式
+(setq default-major-mode 'text-mode)
 
 ;; 方便模式切换
 (defalias 'h 'html-mode)
@@ -113,7 +116,8 @@
 
 ;; 加载颜色配置
 (require 'color-theme)
-(color-theme-euphoria)
+;; (color-theme-euphoria)
+(color-theme-arjen)
 
 ;; 开启时不加载工具栏
 (tool-bar-mode nil)
@@ -499,5 +503,4 @@
 (global-set-key (kbd "<f7>") 'toggle-line-spacing)
 
 ;; emacs 书签 -> C-x r m, C-x r b, C-x r l
-
 
