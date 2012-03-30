@@ -8,7 +8,11 @@
 !/.vimrc
 !/.vim
 !/.emacs
+!/.emacs.el
 !/.emacs.d
+!/.eshell
+/.eshell/*
+!/.eshell/alias
 
 *~
 *.swp

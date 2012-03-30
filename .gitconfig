@@ -1,6 +1,6 @@
 [user]
-    name = yangg
-    email = uedsky@gmail.com
+    name = wangdahu
+    email = 553784858@qq.com
 [core]
     editor = vim
 [color]
@@ -12,4 +12,4 @@
     br = branch
     ls = ls-tree --name-only HEAD
 [github]
-    user = yangg
+    user = wangdahu

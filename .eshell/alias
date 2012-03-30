@@ -1,0 +1,7 @@
+alias www cd /var/www/
+alias lr ls -R
+alias lR ls -R
+alias la ls -A
+alias mysql mysql -h 127.0.0.1 -u root -p
+alias restart sudo /etc/init.d/apache2 restart
+alias ll ls -l

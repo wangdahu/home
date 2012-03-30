@@ -1,7 +1,5 @@
-
-/auto-save-list
-/server
-/tramp
-/session.*
-/.eshell/history
-/.eshell/lastdir
+!*
+.DS_Store
+auto-save-list
+tramp
+session.*

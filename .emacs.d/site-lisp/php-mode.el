@@ -1100,4 +1100,5 @@ current `tags-file-name'."
 
 (provide 'php-mode)
 
+
 ;;; php-mode.el ends here
