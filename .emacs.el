@@ -116,8 +116,8 @@
 
 ;; 加载颜色配置
 (require 'color-theme)
-;; (color-theme-euphoria)
-(color-theme-arjen)
+(color-theme-euphoria)
+;; (color-theme-arjen)
 
 ;; 开启时不加载工具栏
 (tool-bar-mode nil)
