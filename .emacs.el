@@ -426,7 +426,7 @@
 (defun backwards-end(&optional arg)
   (interactive "p")
   (move-end-of-line arg)
-  (backward-char1))
+  (backward-char 1))
 (global-set-key (kbd "C-c e") 'backwards-end)
 
 
