@@ -104,6 +104,8 @@
 
 ;; desktop (保存桌面,回到上次打开的文件)
 (desktop-save-mode t)
+(setq desktop-load-locked-desktop nil)
+(add-hook 'desktop-not-loaded-hook 'desktop-save-mode-off)
 
 ;; 允许emacs和其他外部程序的粘贴
 (setq x-select-enable-clipboard t)
