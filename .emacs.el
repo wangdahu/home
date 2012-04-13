@@ -521,4 +521,6 @@
 ;; emacs 书签 -> C-x r m, C-x r b, C-x r l
 
 
-;; test
+;; 缩写
+(setq-default abbrev-mode t)
+
