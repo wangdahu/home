@@ -104,6 +104,8 @@
 
 ;; desktop (保存桌面,回到上次打开的文件)
 (desktop-save-mode t)
+(setq desktop-load-locked-desktop nil)
+(add-hook 'desktop-not-loaded-hook 'desktop-save-mode-off)
 
 ;; 允许emacs和其他外部程序的粘贴
 (setq x-select-enable-clipboard t)
@@ -520,3 +522,9 @@
 
 ;; emacs 正则  replace-regexp里面可以用正则替换
 
+<<<<<<< HEAD
+=======
+;; 缩写
+(setq-default abbrev-mode t)
+
+>>>>>>> 77f69e231d27bfb15e4c11a9d8b00a746a661d89
