@@ -518,3 +518,5 @@
 
 ;; emacs 书签 -> C-x r m, C-x r b, C-x r l
 
+;; emacs 正则  replace-regexp里面可以用正则替换
+
