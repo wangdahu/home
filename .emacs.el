@@ -113,6 +113,7 @@
 ;; 若命令有组合建,则提示该组合建
 (setq suggest-key-bindings t)
 
+
 ;; 文件名的标题栏
 (setq frame-title-format "%b - %F")
 
@@ -522,9 +523,5 @@
 
 ;; emacs 正则  replace-regexp里面可以用正则替换
 
-<<<<<<< HEAD
-=======
 ;; 缩写
 (setq-default abbrev-mode t)
-
->>>>>>> 77f69e231d27bfb15e4c11a9d8b00a746a661d89
