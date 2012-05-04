@@ -524,3 +524,8 @@
 ;; 缩写
 (setq-default abbrev-mode t)
 
+;; 查看某个版本的所有文件内容改变
+;; svn diff -r 版本号
+
+;; 查看某个版本修改的所有文件
+;; svn log -r 版本号 -v
