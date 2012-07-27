@@ -9,12 +9,8 @@
   (interactive)
   (find-file user-init-file))
 
-;; 关闭当前窗口(一般乍关闭错误的信息用)
-(defun x()
-  (interactive)
-  (delete-window))
-
-;; (server-start)
+;; 字体控制
+(set-default-font "FreeMono-12")
 
 ;; 默认模式
 (setq default-major-mode 'text-mode)
@@ -30,6 +26,9 @@
 
 ;; M-x e->eshell
 (defalias 'e 'eshell)
+;; 关闭当前窗口(一般乍关闭错误的信息用)
+(defalias 'x 'delete-window)
+(defalias 'z 'kill-this-buffer)
 
 ;; 改变eshell标题， 去除××
 (setq eshell-buffer-name "eshell")
@@ -198,6 +197,8 @@
 
 ;; 关闭缓冲区不用回车
 (global-set-key (kbd "C-x k") 'kill-this-buffer)
+(global-set-key (kbd "s-w") 'kill-this-buffer)
+
 
 ;; 缓冲区的加强版
 (require 'ibuffer)
