@@ -1,0 +1,3 @@
+[submodule "site-listp/markdown-mode"]
+	path = site-listp/markdown-mode
+	url = git://jblevins.org/git/markdown-mode.git

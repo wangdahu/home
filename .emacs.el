@@ -1,169 +1,230 @@
-;; emacs 配置文件
+;; 在测试运行代码的时候保存,想关闭错误的窗口
 
-;; 配置初始文件路径/所调用的文件路径
-(setq default-directory "/var/www/")
-(add-to-list 'load-path' "~/.emacs.d/site-lisp")
-
-;; M-x el 打开 emacs配置文件
+;; 打开emacs配置文件
 (defun el()
   (interactive)
   (find-file user-init-file))
 
-;; 字体控制
-(set-default-font "FreeMono-12")
-
-;; 默认模式
-(setq default-major-mode 'text-mode)
-
-;; 方便模式切换
+;; M-x e 打开eshell
+(defalias 'e 'eshell)
+(defalias 'ec 'eshell-command)
 (defalias 'h 'html-mode)
 (defalias 'p 'php-mode)
 (defalias 'j 'js-mode)
 (defalias 'c 'css-mode)
 
-;; eshell 下直接打开文件
-(defalias 'eshell/em 'find-file)
-
-;; M-x e->eshell
-(defalias 'e 'eshell)
-;; 关闭当前窗口(一般乍关闭错误的信息用)
+;; 关闭当前的这个窗口,一般做关闭调试信息用
 (defalias 'x 'delete-window)
-(defalias 'z 'kill-this-buffer)
 
-;; 改变eshell标题， 去除××
-(setq eshell-buffer-name "eshell")
+;; 字体设置
+(set-default-font "Monospace-14")
 
-;; 有 emacsclient 请求时，自动激活 emacs 窗口
-(add-hook 'server-visit-hook
-          '(lambda ()
-             (setq server-window (make-frame))))
+(setq default-directory "/var/www/")
+(add-to-list 'load-path' "~/.emacs.d/site-lisp")
 
-;; 退出 emacs 时，自动关闭当前 buffer
-(add-hook 'server-done-hook
-          '(lambda ()
-             (delete-frame server-window)
-             (setq server-window nil)))
+;; 利用eval-after-load 加快启动速度的库,避免不必要elisp包的加载
+(require 'eval-after-load)
 
-;; 查找文件
-(add-to-list 'load-path "~/.emacs.d/site-lisp/fuzzy-find-in-project")
-(require 'fuzzy-find-in-project)
-(fuzzy-find-project-root "/var/www")
-(global-set-key (kbd "C-c C-f") 'fuzzy-find-in-project)
+;; 关闭缓冲区不需要按回车
+(global-set-key (kbd "C-x k") 'kill-this-buffer)
+(global-set-key (kbd "s-w") 'kill-this-buffer)
+(global-set-key (kbd "M-!") 'eshell-command)
+(global-set-key (kbd "s-a") 'mark-whole-buffer)
+(global-set-key (kbd "<s-tab>") 'kill-whole-line)
 
-;; 设置显示时间
-(display-time-mode 1)
-(setq display-time-24hr-format t)
-(setq display-time-day-and-date t)
+;; 关闭其他标签栏
+(defun kill-other-buffers (&optional list)
+  (interactive)
+  (dolist (buff (cdr (buffer-list)))
+    (kill-buffer buff)))
+(global-set-key (kbd "C-c o") 'kill-other-buffers)
 
-;; 不自动备份文件
-(setq make-backup-files nil)
+;; 设置emacs写文件时的编码
+(setq default-buffer-file-coding-system 'utf-8)
+;; 设置emacs读文件时的编码
+(prefer-coding-system 'utf-8-unix)
 
-;; 显示行号
+(setq default-major-mode 'text-mode)
+;; 滚动条放在右边
+(customize-set-variable 'scroll-bar-mode 'right)
+
+;; 设置左侧行数字的样子
 (global-linum-mode t)
-(setq column-number-mode t)
 (setq linum-format " %d ")
 
-;; 关闭启动emacs时的画面,不设置,这里直接影响在这里着文件的路径(C-x C-f 这时设置的default-direactory就不起作用了)
-(setq inhibit-startup-message t)
-;; (setq gnus-inhibit-startup-message t)
 
-;; 显示括号匹配
+;; 不显示工具栏
+(tool-bar-mode nil)
+(menu-bar-mode nil)
+(column-number-mode t)
+(size-indication-mode t)
+(setq auto-save-default nil)
+
+;; 在状态栏上显示当前光标在那个函数体内部
+;; (which-function-mode t)
+
+;; 光标显示为一根竖线
+(setq-default cursor-type 'bar)
+
+;; 重新绑定C-z到撤销(根据window习惯)
+(global-set-key (kbd "C-z") 'undo)
+(global-set-key (kbd "s-v") 'yank)
+
+;; 不生成备份
+(setq-default make-backup-files nil)
+
+;; 设置粘贴缓冲条目数量
+(setq kill-ring-max 500)
+
+;; 最后一行加结束换行
+(setq require-final-newline t)
+
+;; 括号匹配
 (show-paren-mode t)
-(setq show-paren-style 'parentheses)
+(setq show-paren-style 'parenthesis)
 (setq line-move-visual nil)
 (setq show-paren-delay 0)
+
+;; 括号的匹配配置
 (set-face-foreground 'show-paren-match "red")
 (set-face-bold-p 'show-paren-match t)
 (set-face-background 'show-paren-match nil)
 
-;; 高亮行
+;; 高亮编辑行
 (require 'hl-line)
 (global-hl-line-mode t)
 (or (facep 'my-hl-line-face) (make-face 'my-hl-line-face))
 (setq hl-line-face 'my-hl-line-face)
-(face-spec-set 'my-hl-line-face '((t (:background "#000000"))))
+(face-spec-set 'my-hl-line-face '((t (
+                                      :background "#000000"))))
 
-;; 当 % 在括号上按下时，那么匹配括号，否则输 入一个 %。
-(global-set-key "%" 'match-paren)
-(defun match-paren (arg)
-  "Go to the matching paren if on a paren; otherwise insert %."
-  (interactive "p")
-  (cond ((looking-at "\\s\(") (forward-list 1) (backward-char 1))
- ((looking-at "\\s\)") (forward-char 1) (backward-list 1))
- (t (self-insert-command (or arg 1)))))
-
-;; 括号自动补全
-( setq skeleton-pair-alist nil)
-(global-set-key (kbd "[") 'skeleton-pair-insert-maybe)
-(global-set-key (kbd "(") 'skeleton-pair-insert-maybe)
-(global-set-key (kbd "{") 'skeleton-pair-insert-maybe)
-(global-set-key (kbd "<") 'skeleton-pair-insert-maybe)
-(global-set-key (kbd "\"") 'skeleton-pair-insert-maybe)
-
-
-;; desktop (保存桌面,回到上次打开的文件)
+;; 上次关闭时的列表记录
 (desktop-save-mode t)
-(setq desktop-load-locked-desktop nil)
-(add-hook 'desktop-not-loaded-hook 'desktop-save-mode-off)
 
-;; 允许emacs和其他外部程序的粘贴
-(setq x-select-enable-clipboard t)
+;; 重名文件则显示出路径
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'forward) ;post-frowcrmrd
 
-;; 若命令有组合建,则提示该组合建
-(setq suggest-key-bindings t)
+;; 标题栏设置
+(setq frame-title-format '(buffer-file-name "%f"))
 
+;; redo+
+(require 'redo+)
+(global-set-key (kbd "C-?") 'redo)
 
-;; 文件名的标题栏
-(setq frame-title-format "%b - %F")
+;; 开启emacs 不出现图形页面
+(setq inhibit-startup-message t)
+;; (add-hook 'c-mode-hook 'c-toggle-auto-hungle-state t)
 
-;; 加载颜色配置
-(require 'color-theme)
-(color-theme-euphoria)
-;; (color-theme-arjen)
-
-;; 开启时不加载工具栏
-(tool-bar-mode nil)
-;; (menu-bar-mode nil)
-
-;; 加载php模式
-(require 'php-mode)
-(add-hook 'php-mode-hook
-          '(lambda ()
-            (setq require-final-newline t
-                  comment-start "//" comment-end "")
-            (defun ywb-php-lineup-arglist-intro (langelem)
-              (save-excursion
-                (goto-char (cdr langelem))
-                (vector (+ (current-column) c-basic-offset))))
-            (defun ywb-php-lineup-arglist-close (langelem)
-              (save-excursion
-                (goto-char (cdr langelem))
-                (vector (current-column))))
-            (c-set-offset 'arglist-intro 'ywb-php-lineup-arglist-intro)
-            (c-set-offset 'arglist-close 'ywb-php-lineup-arglist-close)))
-
-;; 自动填充
-;; (setq-hook 'text-mode-hook 'turn-on-auto-fill)
-(setq default-fill-column 120)
-
-
-;; 一个tab为四个空格,用空格代替tab
-(setq-default indent-tabs-mode nil)
-(setq default-tab-width 4)
+;; 代码缩进
+(setq-default tab-width 4)
+(setq c-indent-level 4)
+(setq indent-line-function 'insert-tab)
 (setq c-basic-offset 4)
 (setq html-basic-offset 4)
+(setq sgml-basic-offset 4)
+(setq-default indent-tabs-mode nil)
+
+;; 在行中添加注释和删除注释
+(defun comment-dwim-line (&optional arg)
+  (interactive "*P")
+  (comment-normalize-vars)
+  (if (or (region-active-p)
+               (and (looking-at "[ \t]*$")
+                    (or (= (preceding-char) 10) (= (preceding-char) ?\x20))))
+        (comment-dwim arg)
+      (comment-or-uncomment-region (line-beginning-position) (line-end-position arg))))
+(global-set-key [remap comment-dwim] 'comment-dwim-line)
+
+
 (setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80 84 88 92 96))
 
-;; 回车缩进
-(global-set-key "\C-m" 'newline-and-indent)
-(global-set-key (kbd "C-<return>") 'newline)
+;; 括号自动补全
+;; (defun my-php-mode-auto-pair()
+;;   (interactive)
+;;   (make-local-variable 'skeleton-pair-alist)
+;;   (setq skeleton-pair-alist '(
+;;                               (?{ \n > _ \n ?} >)))
+;;   (setq skeleton-pair t)
+;;   (local-set-key (kbd "{") 'skeleton-pair-insert-maybe)
+;;   (backward-char))
+;; (add-hook 'c-mode-hook 'my-php-mode-auto-pair)
+;; (add-hook 'c++mode-hook 'my-php-mode-auto-pair)
+
+;; 复制行功能
+(defadvice kill-ring-save (before slickcopy activate compile)
+  "当没有选中的时候,用M-w来复制当前行"
+  (interactive
+   (if mark-active (list (region-beginning) (region-end))
+     (list (line-beginning-position)
+           (line-beginning-position 2)))))
+
+(defun copy-word(&optional arg)
+  "复制单词"
+  (interactive "*")
+  (let ((word (symbol-at-point)))
+        (if (not word)
+            (message "no symbol at point")
+          (kill-new (format "%s" word))
+          (message "`%s'" word)
+          )))
+(global-set-key (kbd "M-n") 'copy-word)
 
 
-;; 把yes和no 用y和n 代替
+;; 复制行光标所在位置到行尾
+(defun qiang-copy-line (arg)
+  (interactive "p")
+  (kill-ring-save(point)
+                 (line-end-position))
+  (message "%d line%s copied " arg(if (= 1 arg) "" "S")))
+(global-set-key (kbd "M-k") 'qiang-copy-line)
+
+;; 复制当前行到下一行去
+(defun copy-line-down()
+  (interactive)
+  (let ((c (current-column)))
+    (kill-whole-line)
+    (yank)
+    (yank)
+    (previous-line)
+    (move-to-column c)))
+(global-set-key (kbd "C-M-n") 'copy-line-down)
+
+;; 鼠标滚动的控制
+(setq scroll-margin 3
+      scroll-conservatively 10000)
+
+;;设置允许emacshe和外部其他程序的粘贴
+(setq x-select-enable-clipboard t)
+
+;; 允许鼠标键粘贴
+(setq mouse-yank-at-point t)
+
+;; 显示空白区域的空格和换行
+;; (whitespace-mode t)
+
+;; 自动加载修改的文件
+(global-auto-revert-mode t)
+
+;; 用y,n代替yes,no
 (fset 'yes-or-no-p 'y-or-n-p)
+;; (setq mouse-avoidance-mode 'animate)
+(setq-default line-spacing 5)
 
+;; 时间显示
+(setq display-time-24hr-format t)
+(setq display-time-day-and-date t)
+(display-time-mode 1)
 
-;; 让顶部有多个选项卡
+;; 所在行行高亮
+(require 'hl-line)
+(hl-line-mode 1)
+
+;; 标记高亮
+(transient-mark-mode t)
+(put 'narrow-to-region 'disabled nil)
+
+;; tabbar 多标签
 (when (require 'tabbar nil t)
   (setq tabbar-buffer-groups-function
         (lambda (b) (list "All Buffers")))
@@ -174,265 +235,54 @@
              (find (aref (buffer-name buffer) 0) " *"))
            (buffer-list))))
   (tabbar-mode))
-;; 切换顶部选项卡的快捷键
-(global-set-key [(\C-tab)] 'tabbar-backward)
-(global-set-key (kbd "C-`") 'tabbar-forward)
+(global-set-key [(\C-tab)] 'tabbar-forward)
+(global-set-key (kbd "C-`") 'tabbar-backward)
 
-
-;;;; 设置tabbar外观
-;; 设置默认主题: 字体, 背景和前景颜色，大小
-
+;; 设置选项卡的颜色
 (set-face-attribute 'tabbar-unselected-face nil
                     :inherit 'tabbar-default
-                    :box '( :color "#00B2BF")
+                    :box '(:color "#00B2BF")
                     )
 (set-face-attribute 'tabbar-selected-face nil
                     :inherit 'tabbar-default
                     :background "#D7A8FF"
-                    :box '( :color "#00B2BF")
+                    :box '(:color "#00B2BF")
                     )
 
-;; 允许emacs和外部其他程序的粘贴
-(setq x-select-enable-clipboard t)
+; session
+(require 'session)
+(add-hook 'after-init-hook 'session-initialize)
 
-;; 关闭缓冲区不用回车
-(global-set-key (kbd "C-x k") 'kill-this-buffer)
-(global-set-key (kbd "s-w") 'kill-this-buffer)
+(require 'php-mode)
 
-
-;; 缓冲区的加强版
-(require 'ibuffer)
-(global-set-key (kbd "C-x C-b") 'ibuffer)
-
-;; 光标设置未竖线
-(setq-default cursor-type 'bar)
-;; (setq-default cursor-type 'box)
-;; 光标的颜色设置未红色
-(set-mouse-color "red")
-
-;; 相同的的文件名显示出不同的路径
-(require 'uniquify)
-(setq uniquify-buffer-name-style 'forward)
-
-;; 标题栏显示路径
-(setq frame-title-format
-      '("%S" (buffer-file-name "%f"
-                               (dired-directory dired-directory "%b"))))
-
-;; 可以粘贴时删除标记的字符串
-(pending-delete-mode t)
-
-;; 滚动条放在右边
-(customize-set-variable 'scroll-bar-mode 'right)
-
-;; 自动加载修改国的文件
-(global-auto-revert-mode)
-
-
-;; 过滤不想看到的文件类型
-(setq dired-omit-extensions '(".svn-base"))
-
-;; 复制当前行
-(defadvice kill-ring-save (before slickcopy activate compile)
-  (interactive
-   (if mark-active (list (region-beginning) (region-end))
-     (list (line-beginning-position)
-           (line-beginning-position 2)))))
-
-;; 光标在行中时添加注释和删除注释
-(defun my-comment-dwim (&optional arg)
-  "toogles the comment state of lines (default to current line)"
-  (interactive "*P")
-  (comment-normalize-vars)
-  (if (or (region-active-p)
-          (and (looking-at-p "[ \t]*$")
-               (or (= (preceding-char) 10) (= (preceding-char) ?\x20))))
-      (comment-dwim arg)
-    (comment-or-uncomment-region (line-beginning-position) (line-end-position arg))))
-;; (global-set-key (kbd "M-;") 'my-comment-dwim) ; (kbd "M-;") = "\M-;"
-(global-set-key [remap comment-dwim] 'my-comment-dwim)
-
-;; 添加一行,不管光标位置
-(defun create-new-line-no-matter nil
-  (interactive)
-  (end-of-line)
-  (newline-and-indent))
-;; 不管光标位置,添加在上一行新增一行
-(defun create-previous-line nil
-  (interactive)
-  (beginning-of-line)
-  (newline)
-  (previous-line))
-(global-set-key [C-return] 'create-new-line-no-matter)
-(global-set-key [M-return] 'create-previous-line)
-
-;; 复制当前文件名
-(defun copy-file-name (&optional full)
-  (interactive "P")
-  (let ((file (buffer-name)))
-    (if full
-        (setq file (expand-file-name file)))
-    (kill-new file)
-    (message
-     "File `%s' copied." file)))
-(global-set-key (kbd "C-c M-c" ) 'copy-file-name)
-
-;; 查找文件的功能扩展
-(ido-mode t)
-
-;; 删除环的列表操作
-(require 'browse-kill-ring)
-(global-set-key (kbd "C-c k") 'browse-kill-ring)
-(browse-kill-ring-default-keybindings)
-
-
-;; 最近打开文件记录
+;; 最近打开的文件
 (require 'recentf-settings)
 (setq recentf-auto-clearup 'never)
 (setq recentf-max-menu-items 200)
 
-;; eshell中输入cls清空eshell
-(defun eshell/cls()
-  (interactive)
-  (let ((inhibit-read-only t))
-    (delete-region (point-min) (point-max))))
+(setq auto-fill-mode t)
+(setq fill-column 120)
 
-;; eshell 下用em直接打开文件
-(defalias 'eshell/em 'find-file)
+;; color-theme
+(require 'color-theme)
+(color-theme-euphoria)
 
-;; eshell 复制和打开当前光标的文件
-(defun get-file(operation)
-  (let* ((file (thing-at-point 'filename))
-         (path (if (and file (> (length file) 0)) (expand-file-name file) nil)))
-    (if (and path (file-exists-p path))
-        (funcall operation path)
-      (message "NO Filename Found At Point"))))
+;; 设置开启Delete_Selection模式(输入替换选中,选中的文字可以被替换掉)
+(pending-delete-mode t)
 
-(add-hook 'eshell-mode-hook
-          (lambda()
-            (local-set-key [C-return] '(lambda()
-                                         (interactive) (get-file 'find-file)))
-            (local-set-key [M-return] '(lambda()
-                                         (interactive) (get-file 'kill-new)))))
+;; 设置其他窗口的向下翻页
+(global-set-key (kbd "C-c C-v") 'scroll-other-window)
+;; 设置其他窗口的向上翻页
+(global-set-key (kbd "C-c C-b") 'scroll-other-window-down)
 
-;; 跳转行
-(global-set-key (kbd "M-g") 'goto-line)
+;; emacs 启动最大化
+(setq initial-frame-alist '((top . 1) (left . 640) (width . 93) (height . 51)))
 
-(setq mouse-autoselect-window t)
+;; 在fringe上显示一个小箭头指示当前buffer的边界
+(setq-default indicate-buffer-boundaries 'left)
 
-;; 标记当前位置,再回到当前位置
-(global-set-key (kbd "C-<") 'ska-point-to-register)
-(global-set-key (kbd "C-,") 'ska-jump-to-register)
-(defun ska-point-to-register()
-  "Store cursorposition _fast_ in a register.
-  Use ska-jump-to-register to jump back to the stored
-  position."
-  (interactive)
-  (setq zmacs-region-stays t)
-  (point-to-register 8))
-(defun ska-jump-to-register()
-  "Switches between current cursorposition and position
-  that was stored with ska-point-to-register."
-  (interactive)
-  (setq zmacs-region-stays t)
-  (let ((tmp (point-marker)))
-    (jump-to-register 8)
-    (set-register 8 tmp)))
-
-
-;; 复制当前行到下一行
-(defun copy-line-down()
-  (interactive)
-  (let ((c (current-column)))
-    (kill-whole-line)
-    (yank)
-    (yank)
-    (previous-line 1)
-    (move-to-column c)))
-(global-set-key (kbd "C-M-n") 'copy-line-down)
-
-
-;; 重新绑定C-z到撤销(根据windows习惯)
-(global-set-key (kbd "C-z") 'undo)
-
-;; 显示出文件中多余的空格
-(setq-default show-trailing-whitespace t)
-(global-set-key (kbd "C-c l") 'whitespace-cleanup)
-
-;; 全屏设置
-(if (eq system-type "gnu/linux")
-    (defun my-fullscreen ()
-      (interactive)
-      (x-send-client-message
-       nil 0 nil "_NET_WM_STATE" 32
-       '(2 "_NET_WM_STATE_FULLSCREEN" 0)))
-  (global-set-key [f11] 'my-fullscreen))
-
-;; 关闭其他标签
-(defun kill-other-buffers(&optional list)
-  (interactive)
-  (dolist (buff (cdr (buffer-list)))
-    (kill-buffer buff)))
-(global-set-key (kbd "C-c o") 'kill-other-buffers)
-
-
-;; 显示空白字符
-(setq-default show-trailing-whitespace t)
-(global-set-key (kbd "C-c l") 'whitespace-cleanup)
-
-;; 各种模式下 不显示空白的字符
-(dolist (hook '(eshell-mode-hook calendar-mode-hook help-mode-hook))
-  (add-hook hook '(lambda() (setq show-trailing-whitespace nil))))
-
-;; 单个字母查找
-(defun wy-go-to-char(n char)
-  (interactive "p\ncGo to char:")
-  (search-forward (string char) nil nil n)
-  (while (char-equal (read-char)
-                     char)
-    (search-forward (string char) nil nil n))
-  (setq unread-command-events (list lasr-input-event)))
-(global-set-key (kbd "C-c a") 'wy-go-to-char)
-
-;; 配置cedet
-;; Ecb的操作:
-;; C-c . g d 目录列表窗口
-;; C-c . g s 源码窗口
-;; C-c . g m 方法和变量窗口
-;; C-c . g h 历史窗口
-;; C-c . g l 最后选择过的编辑窗口
-;; C-c . g 1 编辑窗口1
-;; C-c . g n 编辑窗口n
-;; C-c . l c 选择版面
-;; C-c . l r 重画版面
-;; C-c . l t 拴牢版面(锁定版面)
-;; C-c . l w 拴牢可见的ecb窗口
-;; C-c . \ 拴牢编绎窗口
-;; (load-file "~/.emacs.d/site-lisp/cedet/common/cedet.el")
-;; (semantic-load-enable-code-helpers)
-;; (add-to-list 'load-path "~/.emacs.d/site-lisp/ecb")
-;; (require 'ecb)
-;; ;; 展开ecb的快捷键k
-;; (global-set-key (kbd "C-c b") 'ecb-minor-mode)
-;; (setq ecb-use-speedbar-instead-native-tree-buffer 'source
-;;      ecb-windows-width 0.25
-;;      ecb-tip-of-the-day nil
-;; )
-
-;; common lisp 的配置
-(setq inferior-lisp-program "clisp")
-
-
-(autoload 'markdown-mode "markdown-mode.el" "Major mode for editing Markdown files" t)
-(setq auto-mode-alist (cons '("\\.text" . markdown-mode) auto-mode-alist))
-
-;; 跳转至往下某行的倒数第一个字母之前,默认为本行的倒数第一个字母
-(defun backwards-end(&optional arg)
-  (interactive "p")
-  (move-end-of-line arg)
-  (backward-char 1))
-(global-set-key (kbd "C-c e") 'backwards-end)
-
+;; 回车键自动换行并缩进
+(global-set-key (kbd "RET") 'newline-and-indent)
 
 ;; 这个功能就是根据光标的所在位置，智能的选择一块区域，也就
 ;; 是设置成为当前的point和mark。这样就可以方便的拷贝或者剪切，或者交换他们的位
@@ -462,34 +312,244 @@
         (goto-char (mark-marker))
         (sit-for 0 500 nil))
       (goto-char goto-point))))
-(define-key global-map (kbd "M-C-l") 'wcy-mark-some-thing-at-point)
+(define-key global-map (kbd "C-M-l") 'wcy-mark-some-thing-at-point)
 
-;; 复制单词
-(defun copy-word (&optional arg)
-  "Copy words at point"
- (interactive "P")
- (let ((beg (progn (while (looking-back "[a-zA-Z0-9-_]" 1) (backward-word)) (point)))
-       (end (progn (while (looking-at "[a-zA-Z0-9-_]") (forward-word)) (point))))
-   (copy-region-as-kill beg end)))
+;; 复制当前文件名
+(defun copy-file-name ()
+  (interactive "*")
+  (let ((file (buffer-file-name)))
+    (kill-new file)
+    (message "File `%s' copied." file)))
+(global-set-key (kbd "C-c M-c") 'copy-file-name)
 
-;; 跳转到上次的位置
-(require 'recent-jump)
-(setq recent-jump-threshold 4)
-(setq recent-jump-ring-length 10)
-(global-set-key (kbd "<f6>") 'recent-jump-jump-backward)
-(global-set-key (kbd "<f7>") 'recent-jump-jump-forward)
+;; 缓冲区的加强版
+(require 'ibuffer)
+(global-set-key [remap list-buffers] 'ibuffer)
 
-;; 自动补全
-(add-to-list 'load-path "~/.emacs.d/site-lisp/company")
-(autoload 'company-mode "company" nil t)
+;; 查找文件功能扩展
+(ido-mode t)
 
-;; 显示目录
-(global-set-key [f11] 'speedbar)
+;; 单个字母的查找
+(defun wy-go-to-char(n char)
+  (interactive "p\ncGo to char:")
+  (search-forward (string char) nil t n))
+(global-set-key (kbd "C-c a") 'wy-go-to-char)
 
-;; 光标在行尾上下移动时,光标始终在行尾
-(setq track-eol t)
+;; 显示出文件中多余的空格
+(setq-default show-trailing-whitespace t)
+(global-set-key (kbd "C-c l") 'whitespace-cleanup)
 
-;; php数组的缩进处理
+;; 各种模式下 不显示空白字符
+(dolist (hook (list 'eshell-mode-hook 'calendar-mode-hook 'help-mode-hook))
+  (add-hook hook '(lambda() (setq show-trailing-whitespace nil))))
+
+;; 根据后缀名设置打开文件的mode
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . html-mode))
+
+;; 矩形区域操作
+;; (require 'rect-mark-settings)
+
+;; 日历显示(M-x calendar,显示出日历,想爱你日历上点击在按p C 显示出农历的日期)
+
+;; dos-unix
+(defun dos-unix()
+  (interactive)
+  (goto-char (point-min))
+  (while (search-forward "\r" nil t) (replace-match "")))
+
+;; 智能编译(比较智能的C/C++编译命令,如果当前目录有makefile则用make -k 编译,否则,如果是处于c-mode
+;; ,就用gcc -Wall编译,如果是c++-mode 就用g++ -Wall编译)
+(defun smart-compile()
+  (interactive)
+  ;; 查找是否存在Makefile
+  (let ((candidate-mark-file-name '("markfile" "Makefile" "GNUmakefile"))
+        (command nil))
+    (if (not (null
+              (find t candidate-mark-file-name :key
+                    '(lambda (f) (file-readable-p f)))))
+        (setq command "make -k")
+      ;; 没有找到Makefile,查看当前mode是否是已知的可编译的模式
+      (if (null (buffer-file-name (current-buffer)))
+          (message "缓冲区文件不存在,不能编译")
+        (if (eq major-mode 'c-mode)
+            (setq command
+                  (concat "gcc -g -Wall -o"
+                          (file-name-sans-extension
+                           (file-name-nondirectory buffer-file-name))
+                          ""
+                          (file-name-nondirectory buffer-file-name)
+                          ;; "-lm"
+                          ))
+          (if (eq major-mode 'c++-mode)
+              (setq command
+                    (concat "g++ -g -Wall -o"
+                            (file-name-sans-extension
+                             (file-name-nondirectory buffer-file-name))
+                            ""
+                            (file-name-nondorectory buffer-file-name)
+                            ;; "-lm"
+                            ))
+            (if (eq major-mode 'fortran-mode)
+                (setq command
+                      (concat "ifort"
+                              (file0name-nondirectory buffer-file-name)
+                              "-o"
+                              ))
+              (message "该文件不能编译"))))))
+    (if (not (null command))
+        (let ((command (read-from-minibuffer "Compile command: " command)))
+          (compile command)))))
+
+;; 行跳转快捷键修改
+(global-set-key (kbd "M-g") 'goto-line)
+
+;; 改eshell标题，去除**
+(setq eshell-buffer-name "eshell")
+(setq shell-buffer-name "shell")
+;; (require 'multi-term)
+;; (setq multi-term-buffer-name "multi-term")
+
+;; 开启另一个eshell窗口
+(defun osh()
+  (interactive)
+  (split-window-vertically)
+  (eshell))
+
+;; 两个窗口的内容互换
+(defun my-retate-windows()
+  (interactive)
+  (if (= (count-windows) 2)
+      (let* ((wl (window-list))
+             (w1 (frame-first-window))
+             (w2 (if (equal w1 (car wl)) (cadr wl) (car wl)))
+             (b1 (window-buffer w1))
+             (b2 (window-buffer w2))
+             (first (if (equal (current-buffer) b1) t nil)))
+        (if (= (window-width) (frame-width))
+            (split-window-horizontally)
+          (split-window-vertically))
+        (other-window 2)
+        (delete-window)
+        (switch-to-buffer b1)
+        (other-window 1)
+        (switch-to-buffer b2)
+        (when first (other-window 1)))
+    (message "There are not exactly 2 windows .")))
+
+;; 代码补全
+(setq hippie-expand-try-function-list
+      '(try-expend-dabbrev
+        try-expand-dabbrev-visible
+        try-expand-dabbrev-all-buffer
+        try-expand-dabbrev-from-fill
+        try-complete-file-name-partially
+        try-complete-file-name
+        try-expand-all-abbrevs
+        try-expand-list
+        try-expand-line
+        try-complete-lisp-symbol-partially
+        try-complete-lisp-symbol))
+(global-set-key (kbd "M-/") 'hippie-expand)
+
+;; C-c C-j 打开当前文件的所在目录
+(global-set-key (kbd "C-c C-j")
+                (lambda ()
+                  (interactive)
+                  (if (buffer-file-name)
+                      (dired default-directory))))
+
+;; 编译并运行python文件
+(defun my-python-compile()
+  (interactive)
+  (compile (concat "python " (buffer-file-name))))
+(setq compilation-scroll-output t)
+;; (global-set-key (kbd "C-c c") 'my-python-compile)
+
+;; eshell中输入cls清屏
+(defun eshell/cls()
+  (interactive)
+  (let ((inhibit-read-only t))
+    (delete-region (point-min) (point-max))))
+
+;; ;; 打开文件夹
+;; (defun eshell/open(&optional dir)
+;;   (interactive)
+;;   (eshell-command (concat "nautilus " dir)))
+
+(defun gti (&optional cmd)
+  (interactive)
+  (concat "git " cmd))
+
+;; eshell 下直接打开文件
+(defalias 'eshell/em 'find-file)
+
+;; eshell
+(defun get-file (operation)
+  (let* ((file (thing-at-point 'filename))
+         (path (if (and file (> (length file) 0)) (expand-file-name file) nil)))
+    (if (and path (file-exists-p path))
+        (funcall operation path)
+      (message "No filename found at point"))))
+
+(add-hook 'eshell-mode-hook
+          (lambda ()
+             (local-set-key [C-return] '(lambda ()
+                                          (interactive) (get-file 'find-file)))
+             (local-set-key [M-return] '(lambda ()
+                                          (interactive) (get-file 'kill-new)))
+             ))
+
+;; emacs eshell 中设置环境变量
+;; M-x setenv Enter path Enter $path;E:IDKin
+
+;; 光标靠近鼠标,鼠标移动位置
+;; (mouse-avoidance-mode 'animate)
+
+;; 新建一行,不管光标位置
+(defun create-new-line-no-mater(&optional arg)
+  (interactive "P")
+  (end-of-line arg)
+  (newline))
+(global-set-key [C-return] 'create-new-line-no-mater)
+(global-set-key [M-return] '(lambda ()(interactive)(create-new-line-no-mater 0)))
+
+
+;; 两个frame时,鼠标移动到那个frame,光标就在某个frame中了
+;; (setq mouse-autoselect-window t)
+
+
+;; 标记当前位置,在回到当前位置
+(defun ska-point-to-register()
+  (interactive)
+  (setq zmacs-region-stays t)
+  (point-to-register 8))
+(defun ska-jump-to-register()
+  (interactive)
+  (setq zmacs-region-stays t)
+  (let ((tmp (point-marker)))
+    (jump-to-register 8)
+    (set-register 8 tmp)))
+(global-set-key (kbd "C-<") 'ska-point-to-register)
+(global-set-key (kbd "C-,") 'ska-jump-to-register)
+
+;; markdown
+(autoload 'markdown-mode "markdown-mode.el" "Major mode for editing Markdown files" t)
+(setq auto-mode-alist (cons '("\\.text" . markdown-mode) auto-mode-alist))
+
+;; 跳转至某行的倒数第1个字母之前(一般用作跳转到分号之前)
+(defun backwards-end(&optional arg)
+  (interactive "p")
+  (move-end-of-line arg)
+  (backward-char 1))
+(global-set-key (kbd "C-c e") 'backwards-end)
+
+;; ;; 查找文件
+(add-to-list 'load-path "~/.emacs.d/site-lisp/fuzzy-find-in-project")
+(require 'fuzzy-find-in-project)
+(fuzzy-find-project-root "/var/www/")
+(global-set-key (kbd "C-x C-a") 'fuzzy-find-in-project)
+
+;; php 数组的缩进处理
 (add-hook 'php-mode-hook
           (lambda()
             (defun php-arglist-intro(langelem)
@@ -503,32 +563,136 @@
             (c-set-offset 'arglist-intro 'php-arglist-intro)
             (c-set-offset 'arglist-close 'php-arglist-close)))
 
-;; 使用M-上/下/左/右切换emacs窗口
+;; 代替mmm-mode
+(defun set-mode ()
+  "set multi-mode"
+  (interactive)
+  (save-excursion
+    (if (re-search-backward "</script>\\|\\?>\\|</style>\\|<script[^>]*>\\|<\\?\\|<style[^>]*>\\|<\sw[^>]+>\\(['\"]?\\)" nil t)
+        (let ((res (match-string 0))
+              (new-mode nil))
+          (cond ((equal res "<?") (setq new-mode 'php-mode))
+                ((string-match "^<script" res) (setq new-mode 'js-mode))
+                ((string-match "^<style" res) (setq new-mode 'css-mode))
+                (t (setq new-mode 'html-mode)))
+          (and (eq new-mode 'html-mode)
+               (> (length (match-string 1)) 0)
+               (setq new-mode 'js-mode))
+          (or (eq new-mode major-mode)
+              (funcall new-mode))))))
+
+(defun php-newline ()
+  (interactive "*")
+  (if (string-match "views\\(/[a-zA-Z0-9_]+\\)+\\.php$\\|\\.[sp]?html$" buffer-file-truename)
+      (set-mode))
+  (newline-and-indent))
+(global-set-key (kbd "RET") 'php-newline)
+
+(add-to-list 'load-path "~/Documents/find2.el")
+(require 'find2)
+(require 'find2-find-project)
+(setq find2-project-folders '("/var/www/ulife" "/var/www/c"))
+;; (setq find2-omit-files (append find2-omit-files (list "oa/doc" "oa/framework" "oa/source/ueditor" "oa/assets" "oa2/doc" "oa2/framework" "oa2/source/ueditor" "oa2/assets" "oa2/backup" "oa2/protected/runtime/appinstall")))
+(global-set-key "\C-x\C-a" 'find2)
+
+;; Emacs 替换^M的方法 M-x replace-string RET C-q C-m RET RET
+
+;; 光标早行尾上下移动的时候,始终保持在行尾
+(setq track-eol t)
+
+;; 显示目录
+(global-set-key [f11] 'speedbar)
+(setq speedbar-show-unknown-files t)
+(setq speedbar-use-images nil)
+
+;; 选中一个区域后,用C-x n n 进入narrow(隐藏其他部分)模式, C-x n w 退出narrow模式
+;; C-x n d 当前行所在的函数用 narrow模式编辑
+
+;; 统计某个单词出现的次数 M-x count-natches
+;; M-x occur 统计表达式出现的次数和相应的位置
+
+;; 自动补全
+;; (add-to-list 'load-path "~/.emacs.d/site-lisp/company")
+;; (autoload 'company-mode "company" nil t)
+
+;; 打开文件时回到上次退出时的光标
+;; (require 'saveplace)
+;; (setq-default save-place t)
+
+;; 使用M-up或者M-down 切换emacs窗口
 (windmove-default-keybindings 'meta)
 
-;; 选中一个区域后,用C-x n n 今日narrow(隐藏其他部分)模式, C-x n w 退出 C-x n d当前函数用narrow
+;; emacs 书签
+;; C-x r m 设置书签
+;; C-x r b 跳转书签
+;; C-x r l 书签列表, d 删除, u 取消, r 重命名, x执行操作
 
-;; 统计某个单词出现的次数 M-x count-natches/ occur(统计出现的次数和相应的位置)
-
-;; emacs 替换^M 的法子,M-x replace-string RET C-q C-m RET RET
-
-(defun toggle-line-spacing()
-  "Toggle line spacing between 1 and 5 pixels"
-  (interactive)
-  (if (eq line-spacing 1)
-      (setq-default line-spacing 5)
-    (setq-default line-spacing 1)))
-(global-set-key (kbd "<f7>") 'toggle-line-spacing)
-
-;; emacs 书签 -> C-x r m, C-x r b, C-x r l
-
-;; emacs 正则  replace-regexp里面可以用正则替换
-
-;; 缩写
+;; 添加单词缩写
 (setq-default abbrev-mode t)
 
-;; 查看某个版本的所有文件内容改变
+;; 取色命令 gcolor2
+
+
+;; 高亮修改过的行
+;; (global-highlight-changes-mode)
+
+;; (add-to-list 'load-path "~/.emacs.d/site-lisp/magit")
+;; (require 'magit)
+
+(defun dir(&optional dirname)
+  (interactive)
+  (let* ((module (format "%s" dirname))
+         (proj-dir (find2-shell-no-eof "git rev-parse --show-toplevel"))
+        (module-dir (concat "/var/www/oa2/protected/modules/" module)))
+    (if (file-exists-p module-dir)
+        (cd module-dir)
+      (if (string-match "protected/modules" proj-dir)
+          (cd (find2-shell-no-eof (format "find \"%s\" -type d -name \"%s\" | head -1" proj-dir module)))
+        ))))
+(defalias 'eshell/d 'dir)
+
+
+;; ctags -R -e --languages=php
+;; M-. M-*
+(setq tags-file-name "/var/www/oa2/TAGS")
+
+;; 选中复制取消
+(setq mouse-drag-copy-region nil)
+
+;; git checkout . 还远当前文件夹
+;; git cherry-pick 677e430 合并某个版本
+;; git reset --hard HEAD
+;; git reflog
+
+;; 列模式 cua-mode
+;; 合并取消 git merge --abort
+
+;; 删除tag: git tag -d 2.1  git push origin :2.1
+
+;; 查看某个版本的改变的信息
 ;; svn diff -r 版本号
 
-;; 查看某个版本修改的所有文件
+;; 查看某个版本的日志所修改的文件
 ;; svn log -r 版本号 -v
+
+;; 找出备份文件并删除 'find . -name "*~" -delete'
+;; 文件多少行到多少行被删除  sed '1, 5d' -i oa.sql
+;; 删除文件除某个外  rm -rf !(README)
+
+;; 查找文件时忽略大小写
+;; (setq read-buffer-completion-ignore-case t)
+;; (setq read-file-name-completion-ignore-case t)
+
+;; 追加提交
+;; git add .
+;; git ci --amend
+
+;; 查找文件并替换
+;; sed 's/\(filemode = \)true/\1false/' -i config
+
+;; 开启部分提示
+;; (partial-completion-mode 0)
+
+;; 列模式
+(global-set-key [f6] 'cua-mode)
+

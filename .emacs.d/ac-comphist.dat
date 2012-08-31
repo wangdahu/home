@@ -1,0 +1,60 @@
+((("php-mode" .
+   [0 0 0 1 1 0 0 0])
+  ("auto-complete-mode" .
+   [0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0])
+  ("ac-source-php-completion" .
+   [0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("ac-source" .
+   [0 0 0 0 0 0 1 0 2])
+  ("add-to-list" .
+   [0 0 0 1 0 0 0 0 0 0 2])
+  ("ac-sources" .
+   [1 0 0 0 0 0 3 0 0 0])
+  ("make-variable-buffer-local" .
+   [0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("nil" .
+   [1 0 0])
+  ("auto-complete" .
+   [0 0 0 0 0 0 0 0 0 0 0 0 1])
+  ("when" .
+   [1 0 0 0])
+  ("kbd" .
+   [1 0 0])
+  ("php-mode-map" .
+   [0 0 0 0 0 0 0 0 0 0 0 1])
+  ("define-key" .
+   [0 0 0 0 0 1 0 0 0 0])
+  ("php-completion" .
+   [0 0 0 1 0 0 0 0 0 0 0 0 0 0])
+  ("require" .
+   [0 0 0 0 3 0 0])
+  ("lambda" .
+   [0 0 0 1 0 1])
+  ("php-mode-hook" .
+   [0 0 0 0 0 0 1 0 1 0 0 0 0])
+  ("add-hook" .
+   [0 0 0 0 1 0 0 1])
+  ("locate-library" .
+   [0 0 0 0 1 0 0 0 0 1 0 0 0 0])
+  ("createsAction" .
+   [0 0 0 0 1 0 0 0 0 0 0 0 0])
+  ("array" .
+   [2 0 0 0 1])
+  ("ac-auto-show-menu" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("setq" .
+   [3 0 0 0])
+  ("$request" .
+   [0 0 0 0 0 1 0 0])
+  ("$this" .
+   [0 0 0 0 1])
+  ("disableView" .
+   [0 0 0 1 0 0 0 0 0 0 0])
+  ("$_POST" .
+   [0 0 0 1 1 0])
+  ("locate" .
+   [0 0 1 0 0 0])
+  ("ac-source-" .
+   [0 0 0 0 0 0 0 0 0 1])
+  ("ac-modes" .
+   [0 0 0 0 0 0 1 0])))

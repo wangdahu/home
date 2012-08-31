@@ -7,6 +7,7 @@ alias ...='cd ../../'
 alias py=python
 alias so=source
 alias wangsir='cd /var/www/wangsir'
+alias c='cd /var/www/c'
 # enable sudo with aliases
 # If the last character of the alias value is a space or tab character,
 # then the next command word following the alias is also checked for alias expansion.

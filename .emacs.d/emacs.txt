@@ -1,5 +1,3 @@
-C-x RET f       set-buffer-file-code-system
-
 Indentation
 C-M-o           split-line
 M-m             back-to-indentation
@@ -45,7 +43,6 @@ C-_, C-x u, C-/     undo
 C-w             kill-region
 M-w             kill-ring-save
 M-d             kill-word
-M-t             transpose-words
 M-Del           backward-kill-word
 C-x Del         backword-kill-sentence
 M-k             kill-sentence

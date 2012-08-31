@@ -328,6 +328,9 @@ See `php-beginning-of-defun'."
   (set (make-local-variable 'c-doc-comment-style)
        '((php-mode . javadoc)))
 
+  (set (make-local-variable 'comment-start) "// ")
+  (set (make-local-variable 'comment-end) "")
+
 ;;   (c-lang-defconst c-class-decl-kwds
 ;;     php php-class-decl-kwds)
   (set (make-local-variable 'c-class-key) php-class-key)
@@ -357,7 +360,7 @@ See `php-beginning-of-defun'."
   ;; Do not force newline at end of file.  Such newlines can cause
   ;; trouble if the PHP file is included in another file before calls
   ;; to header() or cookie().
-  (set (make-local-variable 'require-final-newline) nil)
+  (set (make-local-variable 'require-final-newline) t)
   (set (make-local-variable 'next-line-add-newlines) nil)
 
   ;; PEAR coding standards

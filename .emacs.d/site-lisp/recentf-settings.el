@@ -4,8 +4,8 @@
 
 (recentf-mode 1)
 
-(global-set-key (kbd "C-x C-r") 'recentf-open-files)
-(global-set-key (kbd "C-x r") 'recentf-open-files-complete)
+(global-set-key (kbd "C-c C-r") 'recentf-open-files)
+(global-set-key (kbd "C-c r") 'recentf-open-files-complete)
 
 (defun recentf-open-files-complete ()
   (interactive)

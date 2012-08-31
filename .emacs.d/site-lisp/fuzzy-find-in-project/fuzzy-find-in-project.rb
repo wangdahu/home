@@ -7,8 +7,7 @@
 # Usage: ./fuzzy-find-in-project.rb <project-path>
 # There is currently no error handling.
 
-require 'rubygems'
-require 'fuzzy_file_finder'
+require '~/.emacs.d/site-lisp/fuzzy-find-in-project/fuzzy_file_finder.rb'
 
 finder = FuzzyFileFinder.new(ARGV[0], 50000)
 while string = $stdin.readline

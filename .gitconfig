@@ -11,5 +11,6 @@
     co = checkout
     br = branch
     ls = ls-tree --name-only HEAD
+    log = log --oneline
 [github]
     user = wangdahu
