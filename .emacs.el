@@ -109,8 +109,8 @@
 (setq frame-title-format '(buffer-file-name "%f"))
 
 ;; redo+
-(require 'redo+)
-(global-set-key (kbd "C-?") 'redo)
+;; (require 'redo+)
+;; (global-set-key (kbd "C-?") 'redo)
 
 ;; 开启emacs 不出现图形页面
 (setq inhibit-startup-message t)
@@ -543,11 +543,6 @@
   (backward-char 1))
 (global-set-key (kbd "C-c e") 'backwards-end)
 
-;; ;; 查找文件
-(add-to-list 'load-path "~/.emacs.d/site-lisp/fuzzy-find-in-project")
-(require 'fuzzy-find-in-project)
-(fuzzy-find-project-root "/var/www/")
-(global-set-key (kbd "C-x C-a") 'fuzzy-find-in-project)
 
 ;; php 数组的缩进处理
 (add-hook 'php-mode-hook
@@ -696,3 +691,71 @@
 ;; 列模式
 (global-set-key [f6] 'cua-mode)
 
+(defun kid-sdcv-to-buffer ()
+  (interactive)
+  (let ((word (if mark-active
+                  (buffer-substring-no-properties (region-beginning) (region-end))
+                (current-word nil t))))
+    (setq word (read-string (format "Search the dictionary for (default %s): " word)
+                            nil nil word))
+    (set-buffer (get-buffer-create "*sdcv*"))
+    (buffer-disable-undo)
+    (erase-buffer)
+    (let ((process (start-process-shell-command "sdcv" "*sdcv*" "sdcv" "-n" word)))
+      (set-process-sentinel
+       process
+       (lambda (process signal)
+         (when (memq (process-status process) '(exit signal))
+           (unless (string= (buffer-name) "*sdcv*")
+             (setq kid-sdcv-window-configuration (current-window-configuration))
+             (switch-to-buffer-other-window "*sdcv*")
+             (local-set-key (kbd "d") 'kid-sdcv-to-buffer)
+             (local-set-key (kbd "q") (lambda ()
+                                        (interactive)
+                                        (bury-buffer)
+                                        (unless (null (cdr (window-list))) ; only one window
+                                          (delete-window)))))
+           (goto-char (point-min))))))))
+(global-set-key (kbd "C-c d") 'kid-sdcv-to-buffer)
+
+
+;; 编译定制
+(setq my-compile-test-file "")
+(setq my-compile-test-args "")
+(setq compile-command "make -j 3  cd=true d=true")
+
+(defun my-file-name (name)
+  "获得文件名，返回结果不包括路径和扩展名"
+  (setq fields (split-string name "/"))
+  (setq name (elt fields (- (length fields) 1)))
+  (setq len (length name))
+  (setq i len)
+  (setq ch "")
+  (while (and (> i 0) (not (string= ch ".")))
+    (progn
+      (setq ch (substring name (- i 1) i))
+      (setq i (- i 1))))
+  (setq name (substring name 0 i)))
+
+(setq my-compile-run-any-command "gcc")
+(defun my-compile-run-any ()
+  "编译任意的单个文件并运行编译好的程序"
+  (interactive)
+  (save-some-buffers t)
+  (setq temp compile-command)
+  (setq test-name nil)
+  (setq type nil)
+  (setq extension (file-name-extension buffer-file-name))
+  (setq run-name (my-file-name buffer-file-name))
+  (setq run-file (concat run-name "." extension))
+
+  (setq command (concat my-compile-run-any-command " -o " run-name " " run-file))
+  (setq command (concat command " && ./" run-name))
+  (setq command (concat command " " my-compile-test-args))
+
+  (compile command)
+  (setq compile-command temp))
+(defalias 'r 'my-compile-run-any)
+
+;; 文件夹替换
+;; (M-x dired-do-query-replace-regexp)
