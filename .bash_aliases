@@ -12,3 +12,7 @@ alias st='git st'
 alias ms='git co master'
 alias pms='git push origin master'
 alias pl='git pull'
+
+md(){
+	mkdir -p "$@" && cd $_;
+}
