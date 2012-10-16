@@ -108,9 +108,9 @@
 ;; 标题栏设置
 (setq frame-title-format '(buffer-file-name "%f"))
 
-;; redo+
-(require 'redo+)
-(global-set-key (kbd "C-?") 'redo)
+;; ;; redo+
+;; (require 'redo+)
+;; (global-set-key (kbd "C-?") 'redo)
 
 ;; 开启emacs 不出现图形页面
 (setq inhibit-startup-message t)
