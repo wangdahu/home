@@ -13,3 +13,8 @@ alias ms='git co master'
 alias pms='git push origin master'
 alias pl='git pull'
 alias grp='la | grep'
+PS1="\e[32;40m\u@\h: \w$\e[0m "
+
+md(){
+	mkdir -p "$@" && cd $_;
+}
