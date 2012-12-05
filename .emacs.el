@@ -758,4 +758,7 @@
 (defalias 'r 'my-compile-run-any)
 
 ;; 文件夹替换
-;; (M-x dired-do-query-replace-regexp)
+;; 第一步：find-dired(按条件在文件夹下查找文件)
+;; 第二步：标记要查找的文件 % m
+;; 第三步：dired-do-query-replace-regexp 替换要查找的文件
+;; 第四步：打开缓冲列表 保存替换的所有文件 * u s
