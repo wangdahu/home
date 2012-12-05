@@ -13,6 +13,7 @@ alias ms='git co master'
 alias pms='git push origin master'
 alias pl='git pull'
 alias grp='la | grep'
+alias wg='cd /var/www'
 
 md(){
 	mkdir -p "$@" && cd $_;

@@ -1,33 +1,34 @@
-alias co git co $*
-alias log git log --color --author=wangg -n 30 --pretty=format:'%h was %an, %ar, message: %s' --graph
-alias abort git merge abort
-alias oa cd /var/www/oa2
-alias open nautilus $1
-alias tool cd /var/www/oa2/tool
-alias release cd /var/www/oa2-release
-alias st git status
-alias la ls -A --color
-alias m7 sudo chmod 777 -R /var/www/oa2/protected/modules/
-alias pdev git push origin dev
-alias dev git checkout dev
-alias soft cd /var/www/soft
-alias .... cd ../../..
-alias ... cd ../../
-alias mysql mysql -u root -p.
-alias oa7 sudo chmod 777 -R /var/www/oa2
-alias diff git diff --color
-alias logw git log --color --author=wangg -n 10 --pretty=format:'%h was %an, %ar, message: %s' --graph
-alias logall git log --color -n 20 --pretty=format:'%h was %an, %ar, message: %s' --graph
-alias pl git pull
-alias pu git push
-alias del.sh sh /var/www/oa2/tool/del.sh
-alias ms git checkout master
-alias pms git push origin master
-alias ll ls -l $*
-alias gg git $*
-alias sync.sh sh /var/www/oa2/tool/sync.local.sh
-alias run7 sudo chmod 777 /var/www/oa2/protected/runtime/application.log
-alias elog echo  /var/www/oa2/protected/runtime/application.log
-alias ptag git push origin $*
-alias dtag git tag -d $*
+alias wg cd /var/www
 alias tag git tag $*
+alias dtag git tag -d $*
+alias ptag git push origin $*
+alias elog echo  /var/www/oa2/protected/runtime/application.log
+alias run7 sudo chmod 777 /var/www/oa2/protected/runtime/application.log
+alias sync.sh sh /var/www/oa2/tool/sync.local.sh
+alias gg git $*
+alias ll ls -l $*
+alias pms git push origin master
+alias ms git checkout master
+alias del.sh sh /var/www/oa2/tool/del.sh
+alias pu git push
+alias pl git pull
+alias logall git log --color -n 20 --pretty=format:'%h was %an, %ar, message: %s' --graph
+alias logw git log --color --author=wangg -n 10 --pretty=format:'%h was %an, %ar, message: %s' --graph
+alias diff git diff --color
+alias oa7 sudo chmod 777 -R /var/www/oa2
+alias mysql mysql -u root -p.
+alias ... cd ../../
+alias .... cd ../../..
+alias soft cd /var/www/soft
+alias dev git checkout dev
+alias pdev git push origin dev
+alias m7 sudo chmod 777 -R /var/www/oa2/protected/modules/
+alias la ls -A --color
+alias st git status
+alias release cd /var/www/oa2-release
+alias tool cd /var/www/oa2/tool
+alias open nautilus $1
+alias oa cd /var/www/oa2
+alias abort git merge abort
+alias log git log --color --author=wangg -n 30 --pretty=format:'%h was %an, %ar, message: %s' --graph
+alias co git co $*
