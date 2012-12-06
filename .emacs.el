@@ -688,6 +688,8 @@
 ;; 开启部分提示
 ;; (partial-completion-mode 0)
 
+;; 强制提交   git push -f
+
 ;; 列模式
 (global-set-key [f6] 'cua-mode)
 
