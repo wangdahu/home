@@ -14,6 +14,7 @@ alias pms='git push origin master'
 alias pl='git pull'
 alias grp='la | grep'
 alias wg='cd /var/www'
+alias svi='sudo vi'
 
 md(){
 	mkdir -p "$@" && cd $_;
