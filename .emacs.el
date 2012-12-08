@@ -586,8 +586,8 @@
 (add-to-list 'load-path "~/Documents/find2.el")
 (require 'find2)
 (require 'find2-find-project)
-(setq find2-project-folders '("/var/www/ulife" "/var/www/c"))
-;; (setq find2-omit-files (append find2-omit-files (list "oa/doc" "oa/framework" "oa/source/ueditor" "oa/assets" "oa2/doc" "oa2/framework" "oa2/source/ueditor" "oa2/assets" "oa2/backup" "oa2/protected/runtime/appinstall")))
+(setq find2-project-folders '("/var/www/ulife" "/var/www/c" "/var/www/company"))
+(setq find2-omit-files (append find2-omit-files (list "company/assets" "company/framework")))
 (global-set-key "\C-x\C-a" 'find2)
 
 ;; Emacs 替换^M的方法 M-x replace-string RET C-q C-m RET RET
