@@ -587,7 +587,7 @@
 (require 'find2)
 (require 'find2-find-project)
 (setq find2-project-folders '("/var/www/ulife" "/var/www/c" "/var/www/company" "/var/www/diary"))
-(setq find2-omit-files (append find2-omit-files (list "company/framework" "company/assets")))
+(setq find2-omit-files (append find2-omit-files (list "company/assets" "company/framework" "diary/DB" "diary/source/jqueryUI")))
 (global-set-key "\C-x\C-a" 'find2)
 
 ;; Emacs 替换^M的方法 M-x replace-string RET C-q C-m RET RET
