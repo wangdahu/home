@@ -764,3 +764,7 @@
 ;; 第二步：标记要查找的文件 % m
 ;; 第三步：dired-do-query-replace-regexp 替换要查找的文件
 ;; 第四步：打开缓冲列表 保存替换的所有文件 * u s
+
+;; php语法验证
+(require 'flymake)
+(add-hook 'php-mode-map (lambda() (flymake-mode 1)))
