@@ -586,7 +586,7 @@
 (add-to-list 'load-path "~/Documents/find2.el")
 (require 'find2)
 (require 'find2-find-project)
-(setq find2-project-folders '("/var/www/ulife" "/var/www/c" "/var/www/company" "/var/www/diary"))
+(setq find2-project-folders '("/var/www/ulife" "/var/www/c" "/var/www/company" "/var/www/ftp-diary" "/var/www/diary"))
 (setq find2-omit-files (append find2-omit-files (list "company/framework" "company/assets")))
 (global-set-key "\C-x\C-a" 'find2)
 
