@@ -17,6 +17,7 @@ alias wg='cd /var/www'
 alias si='sudo vi'
 alias rr='rm -r'
 alias vpn='python /home/wg/Document/local.py -s uedsky.com -p 7557 -l 3838 -k ZjE5MDU3M2Ex'
+alias dpubl='cd ~/Dropbox/Public/'
 
 md(){
 	mkdir -p "$@" && cd $_;
