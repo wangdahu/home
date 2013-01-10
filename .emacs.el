@@ -587,7 +587,7 @@
 (require 'find2)
 (require 'find2-find-project)
 (setq find2-project-folders '("/var/www/ulife" "/var/www/c" "/var/www/company" "/var/www/ftp-diary" "/var/www/diary"))
-(setq find2-omit-files (append find2-omit-files (list "company/framework" "company/assets")))
+(setq find2-omit-files (append find2-omit-files (list "company/assets" "company/framework" "ftp-diary/source/jqueryUI" "diary/source/jqueryUI")))
 (global-set-key "\C-x\C-a" 'find2)
 
 ;; Emacs 替换^M的方法 M-x replace-string RET C-q C-m RET RET
@@ -764,3 +764,7 @@
 ;; 第二步：标记要查找的文件 % m
 ;; 第三步：dired-do-query-replace-regexp 替换要查找的文件
 ;; 第四步：打开缓冲列表 保存替换的所有文件 * u s
+
+;; php语法验证
+(require 'flymake)
+(add-hook 'php-mode-map (lambda() (flymake-mode 1)))
