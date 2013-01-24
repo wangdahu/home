@@ -5,6 +5,7 @@
 !/.gitmodules
 !/.git-completion.sh
 !/.bash_aliases
+!/.bashrc
 !/.vimrc
 !/.vim
 !/.emacs

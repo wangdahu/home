@@ -18,6 +18,7 @@ alias si='sudo vi'
 alias rr='rm -r'
 alias vpn='python /home/wg/Document/local.py -s uedsky.com -p 7557 -l 3838 -k ZjE5MDU3M2Ex'
 alias dpubl='cd ~/Dropbox/Public/'
+alias ymysql='mysql -h113.106.88.164 -P3310 -uroot -pwiseuc501200'
 
 md(){
 	mkdir -p "$@" && cd $_;
