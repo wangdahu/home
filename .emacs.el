@@ -766,5 +766,5 @@
 ;; 第四步：打开缓冲列表 保存替换的所有文件 * u s
 
 ;; php语法验证
-(require 'flymake)
-(add-hook 'php-mode-map (lambda() (flymake-mode 1)))
+;; (require 'flymake)
+;; (add-hook 'php-mode-map (lambda() (flymake-mode 1)))
