@@ -1,16 +1,50 @@
 [user]
     name = wangdahu
     email = 553784858@qq.com
-[core]
-    editor = vim
-[color]
-    ui = true
 [alias]
-    ci = commit
-    st = status
-    co = checkout
-    br = branch
-    ls = ls-tree --name-only HEAD
-    log = log --oneline
-[github]
-    user = wangdahu
+	ci = commit
+	co = checkout
+	br = branch
+
+	# status
+	st = status
+	s  = status -s
+	# numbered status && edit
+	# Usage:
+	#	git sn
+	#	git sn 1-3,5,7
+	#	git sn 9-10 git add
+	sn = !"sn() { if [ $# -eq 0 ]; then git status -s | nl -w3; else local num=`echo $1 | sed 's/,/p;/g;s/-/,/g'`; local editor=${2:-echo}; shift; [ $# -gt 0 ] && shift; for file in $(git status -s | cut -c4- | sed  -n ${num}p;); do $editor $* $file; done fi }; sn"
+
+	# log
+	l = log --graph --date=relative
+	changes = log --stat --date=relative
+	short = log --pretty=format:'%cd %h %s <%cn>' --date=short
+
+	# diff
+	d  = diff
+	dc = diff --cached
+	dh = diff HEAD
+
+	mine = !"git log --author=$(git config --get user.name) --no-merges"
+	today = !"git mine --since=1am --reverse --pretty=%s"
+
+	# add and remove new/deleted files from git index
+	ar = !git ls-files -d -o --exclude-standard -z | xargs -0 git update-index --add --remove
+
+	ls = ls-tree --name-only HEAD
+
+	sync = !rsync -azv --delete $(git rev-parse --show-toplevel) uedsky.com:~/ --exclude={.git,source}
+[format]
+	pretty = format: %Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset
+[color]
+	ui = auto
+	# branch = always
+	# diff   = always
+	# grep   = always
+	# status = always
+[color "status"]
+	untracked = magenta
+[color "diff"]
+	meta = cyan
+	frag = magenta

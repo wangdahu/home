@@ -768,3 +768,5 @@
 ;; php语法验证
 ;; (require 'flymake)
 ;; (add-hook 'php-mode-map (lambda() (flymake-mode 1)))
+
+;; 括号跳转 C-M-b C-M-f
